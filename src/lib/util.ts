@@ -80,7 +80,7 @@ export function padNumber(value: number) {
  *
  * @returns A new string with any special characters in the input `text` escaped with a backslash.
  */
-export function regExpEscape(text) {
+export function regExpEscape(text: string): string {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
