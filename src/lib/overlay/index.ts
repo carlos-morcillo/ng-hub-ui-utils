@@ -1,0 +1,7 @@
+export type { ConnectionPosition } from './connection-position';
+export type { HorizontalConnectionPos } from './horizontal-connection-pos';
+export type { OverlayConfig } from './overlay-config';
+export { OverlayPosition } from './overlay-position';
+export { OverlayRef } from './overlay-ref';
+export { OverlayService } from './overlay-service';
+export type { VerticalConnectionPos } from './vertical-connection-pos';

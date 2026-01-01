@@ -1,0 +1,25 @@
+/**
+ * Overlay styles for custom overlay system
+ */
+
+.hub-overlay-container {
+	position: absolute;
+	z-index: 1000;
+	background: white;
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	overflow: auto;
+}
+
+.hub-overlay-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+}
+
+.hub-overlay-transparent-backdrop {
+	background: transparent;
+}

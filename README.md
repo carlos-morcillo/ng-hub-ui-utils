@@ -2,65 +2,109 @@
 
 [![NPM Version](https://img.shields.io/npm/v/ng-hub-ui-utils.svg)](https://www.npmjs.com/package/ng-hub-ui-utils)
 [![License](https://img.shields.io/npm/l/ng-hub-ui-utils.svg)](LICENSE)
-[![Build Status](https://img.shields.io/github/workflow/status/hub-ui/ng-hub-ui/CI)](https://github.com/hub-ui/ng-hub-ui/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/carlos-morcillo/ng-hub-ui-utils/CI)](https://github.com/carlos-morcillo/ng-hub-ui-utils/actions)
 
-> Biblioteca de utilidades común para Angular, soporte fundamental del ecosistema Hub UI.
+> Common utilities library for Angular, fundamental support for the Hub UI ecosystem.
 
-## 🏡 Forma parte de la familia Hub UI
+[Español](./README.es.md) | **English**
 
-Esta biblioteca es parte del ecosistema **Hub UI**, que incluye:
-- 🎨 **ng-hub-ui-accordion** - Componentes de acordeón
-- 👤 **ng-hub-ui-avatar** - Componentes de avatar
-- 📋 **ng-hub-ui-board** - Tableros tipo Kanban
-- 🧭 **ng-hub-ui-breadcrumbs** - Migas de pan de navegación
-- 📜 **ng-hub-ui-dropdown** - Componentes dropdown
-- 📝 **ng-hub-ui-list** - Componentes de lista
-- 🪟 **ng-hub-ui-modal** - Componentes de modal
-- 🌀 **ng-hub-ui-portal** - Sistema de portales
-- 📊 **ng-hub-ui-stepper** - Componentes step-by-step
-- 🗂️ **ng-hub-ui-table** - Tablas con paginación
-- 🛠️ **ng-hub-ui-utils** ← estás aquí - Utilidades comunes
-- 📱 **ng-hub-ui-action-sheet** - Hojas de acción móviles
+## 🏡 Part of the Hub UI Family
 
-## 💡 Inspiración
+This library is part of the **Hub UI** ecosystem, which includes:
 
-Esta biblioteca de utilidades surge de la necesidad de proporcionar funciones de apoyo comunes, reutilizables y optimizadas para todo el ecosistema Hub UI. Inspirada en las mejores prácticas de desarrollo Angular y en las utilidades internas de bibliotecas como Angular Bootstrap y Material Design, proporciona herramientas esenciales para el desarrollo de componentes UI modernos.
+-   🎨 [**ng-hub-ui-accordion**](https://github.com/carlos-morcillo/ng-hub-ui-accordion) - Accordion components
+-   📱 **ng-hub-ui-action-sheet** - Mobile action sheets
+-   👤 [**ng-hub-ui-avatar**](https://github.com/carlos-morcillo/ng-hub-ui-avatar) - Avatar components
+-   📋 [**ng-hub-ui-board**](https://github.com/carlos-morcillo/ng-hub-ui-board) - Kanban-style boards
+-   🧭 [**ng-hub-ui-breadcrumbs**](https://github.com/carlos-morcillo/ng-hub-ui-breadcrumbs) - Navigation breadcrumbs
+-   📜 **ng-hub-ui-dropdown** - Dropdown components
+-   📝 **ng-hub-ui-list** - List components
+-   🪟 [**ng-hub-ui-modal**](https://github.com/carlos-morcillo/ng-hub-ui-modal) - Modal components
+-   🗂️ [**ng-hub-ui-paginable**](https://github.com/carlos-morcillo/ng-hub-ui-paginable) - Tables with pagination
+-   🌀 [**ng-hub-ui-portal**](https://github.com/carlos-morcillo/ng-hub-ui-portal) - Portal system
+-   🔀 [**ng-hub-ui-sortable**](https://github.com/carlos-morcillo/ng-hub-ui-sortable) - Sortable components
+-   📊 [**ng-hub-ui-stepper**](https://github.com/carlos-morcillo/ng-hub-ui-stepper) - Step-by-step components
+-   🛠️ [**ng-hub-ui-utils**](https://github.com/carlos-morcillo/ng-hub-ui-utils) ← you are here - Common utilities
 
-## ✨ Características
+## 💡 Inspiration
 
-### 🔧 Gestión de Focus y Accesibilidad
-Utilidades para manejo avanzado del foco, trap de foco y navegación por teclado.
+This utilities library emerged from the need to provide common, reusable, and optimized support functions for the entire Hub UI ecosystem. Inspired by best practices in Angular development and internal utilities from libraries like Angular Bootstrap and Material Design, it provides essential tools for developing modern UI components.
+
+## ✨ Features
+
+### 🔧 Focus Management and Accessibility
+
+Advanced utilities for focus handling, focus trapping, and keyboard navigation.
 
 ```typescript
 import { getFocusableBoundaryElements, FOCUSABLE_ELEMENTS_SELECTOR } from 'ng-hub-ui-utils';
 
-// Obtener elementos focusables en un contenedor
+// Get focusable elements in a container
 const [firstElement, lastElement] = getFocusableBoundaryElements(containerElement);
 
-// Crear un trap de foco en un modal
-const focusTrap = createFocusTrap(modalElement, trapOptions);
+// Create a focus trap in a modal
+const focusTrap = hubFocusTrap(ngZone, modalElement, stopFocusTrap$);
 ```
 
-### 🪟 Servicio de Popup y Overlay
-Sistema avanzado para crear popups, overlays y componentes flotantes dinámicamente.
+### 🪟 Overlay Service
+
+Advanced system for creating overlays and floating components with flexible positioning.
+
+```typescript
+import { OverlayService, OverlayConfig } from 'ng-hub-ui-utils';
+
+@Component({
+  selector: 'app-example'
+})
+export class ExampleComponent {
+  constructor(private overlayService: OverlayService) {}
+
+  openOverlay(elementRef: ElementRef) {
+    // Create overlay with configuration
+    const overlayRef = this.overlayService.create({
+      hasBackdrop: true,
+      backdropClass: 'custom-backdrop'
+    });
+
+    // Configure position strategy
+    const positionStrategy = this.overlayService.position()
+      .flexibleConnectedTo(elementRef)
+      .withPositions([{
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top'
+      }]);
+
+    // Attach component to overlay
+    const componentRef = overlayRef.attach(MyComponent);
+  }
+}
+```
+
+### 🎯 Popup Service (Base Class)
+
+Base service for creating custom popup implementations.
 
 ```typescript
 import { PopupService } from 'ng-hub-ui-utils';
 
 @Injectable()
 export class MyPopupService extends PopupService<MyPopupComponent> {
-  open(content: TemplateRef<any> | Type<any>) {
-    return this.openPopup(content, {
-      container: 'body',
-      backdrop: true,
-      keyboard: true
-    });
+  constructor() {
+    super(MyPopupComponent);
+  }
+
+  openPopup(content?: string | TemplateRef<any>) {
+    const { windowRef, transition$ } = super.open(content, {}, true);
+    return { windowRef, transition$ };
   }
 }
 ```
 
-### 📜 Gestión de Scrollbar
-Control inteligente de scrollbars con compensación de layout.
+### 📜 Scrollbar Management
+
+Intelligent scrollbar control with layout compensation.
 
 ```typescript
 import { ScrollBar } from 'ng-hub-ui-utils';
@@ -68,313 +112,459 @@ import { ScrollBar } from 'ng-hub-ui-utils';
 constructor(private scrollBar: ScrollBar) {}
 
 openModal() {
-  // Oculta scrollbar y compensa el espacio
+  // Hide scrollbar and compensate for space
   const reverter = this.scrollBar.hide();
-  
-  // Al cerrar el modal, restaura el scrollbar
+
+  // On modal close, restore scrollbar
   modalClose.subscribe(() => reverter());
 }
 ```
 
-### ⚡ Sistema de Transiciones
-Utilidades para animaciones y transiciones fluidas con detección automática.
+### ⚡ Transition System
+
+Utilities for smooth animations and transitions with automatic detection.
 
 ```typescript
 import { hubRunTransition } from 'ng-hub-ui-utils';
 
-// Ejecutar transición con callback
+// Execute transition with callback
 hubRunTransition(
-  this.ngZone,
-  element,
-  (element, animation, context) => {
-    // Lógica de inicio de transición
-    element.classList.add('transitioning');
-    
-    return () => {
-      // Cleanup al final de la transición
-      element.classList.remove('transitioning');
-    };
-  },
-  {
-    animation: true,
-    runningTransition: 'continue',
-    context: { customData: 'value' }
-  }
+	this.ngZone,
+	element,
+	(element, animation, context) => {
+		// Transition start logic
+		element.classList.add('transitioning');
+
+		return () => {
+			// Cleanup at transition end
+			element.classList.remove('transitioning');
+		};
+	},
+	{
+		animation: true,
+		runningTransition: 'continue',
+		context: { customData: 'value' }
+	}
 ).subscribe(() => {
-  console.log('Transición completada');
+	console.log('Transition completed');
 });
 ```
 
-### 🛠️ Funciones de Utilidad General
-Conjunto completo de helpers para validación, transformación y manipulación de datos.
+### 🧰 Standalone Angular Pipes
+
+Complete set of utility pipes for validation, transformation, and data manipulation.
+
+```typescript
+import { GetPipe, IsStringPipe, IsObjectPipe, IsObservablePipe, UcfirstPipe, UnwrapAsyncPipe } from 'ng-hub-ui-utils';
+
+@Component({
+	standalone: true,
+	imports: [GetPipe, IsStringPipe, UcfirstPipe, UnwrapAsyncPipe],
+	template: `
+		<!-- Safe nested property access -->
+		<p>{{ user | get : 'address.city' : 'Unknown' }}</p>
+
+		<!-- Capitalize first letter -->
+		<h1>{{ title | ucfirst }}</h1>
+
+		<!-- Type checking in templates -->
+		@if (value | isString) {
+		<span>It's a string: {{ value }}</span>
+		}
+
+		<!-- Unwrap Observable or direct value -->
+		<div>{{ observableOrValue | unwrapAsync }}</div>
+	`
+})
+export class ExampleComponent {
+	user = { address: { city: 'New York' } };
+	title = 'hello world';
+	value: any = 'test';
+	observableOrValue = of('Observable value');
+}
+```
+
+**Available Pipes:**
+
+-   **GetPipe** (`get`): Safe nested property access with default values
+-   **IsStringPipe** (`isString`): Check if value is a string
+-   **IsObjectPipe** (`isObject`): Check if value is an object
+-   **IsObservablePipe** (`isObservable`): Check if value is an Observable
+-   **UcfirstPipe** (`ucfirst`): Capitalize first letter of a string
+-   **UnwrapAsyncPipe** (`unwrapAsync`): Unwrap Observable or return direct value
+
+### 🛠️ General Utility Functions
+
+Complete set of helpers for validation, transformation, and data manipulation.
 
 ```typescript
 import {
-  toInteger,
-  toString,
-  getValueInRange,
-  isString,
-  isNumber,
-  isInteger,
-  isDefined,
-  isPromise,
-  padNumber,
-  regExpEscape,
-  closest,
-  reflow,
-  removeAccents,
-  getActiveElement
+	toInteger,
+	toString,
+	getValueInRange,
+	isString,
+	isNumber,
+	isInteger,
+	isDefined,
+	isPromise,
+	padNumber,
+	regExpEscape,
+	closest,
+	reflow,
+	removeAccents,
+	getActiveElement
 } from 'ng-hub-ui-utils';
 
-// Conversiones seguras
-const numValue = toInteger('42');        // 42
-const strValue = toString(null);         // ''
+// Safe conversions
+const numValue = toInteger('42'); // 42
+const strValue = toString(null); // ''
 
-// Validaciones de tipo
-if (isString(value)) { /* ... */ }
-if (isPromise(result)) { /* ... */ }
+// Type validations
+if (isString(value)) {
+	/* ... */
+}
+if (isPromise(result)) {
+	/* ... */
+}
 
-// Manipulación de DOM
+// DOM manipulation
 const parent = closest(element, '.container');
-reflow(element); // Fuerza reflow del navegador
+reflow(element); // Force browser reflow
 
-// Utilidades de string
+// String utilities
 const clean = removeAccents('niño'); // "nino"
 const escaped = regExpEscape('hello?'); // "hello\\?"
 
-// Gestión de foco
-const activeEl = getActiveElement(); // Incluye shadow DOM
+// Focus management
+const activeEl = getActiveElement(); // Includes shadow DOM
 ```
 
-### 🎯 TypeScript completo
-Tipado estricto en toda la biblioteca con interfaces y tipos bien definidos.
+### 🎯 Full TypeScript Support
+
+Strict typing throughout the library with well-defined interfaces and types.
 
 ```typescript
-// Tipos de transición
-type TransitionStartFn<T> = (
-  element: HTMLElement,
-  animation: boolean,
-  context: T
-) => TransitionEndFn | void;
+// Transition types
+type TransitionStartFn<T> = (element: HTMLElement, animation: boolean, context: T) => TransitionEndFn | void;
 
 interface TransitionOptions<T> {
-  animation: boolean;
-  runningTransition: 'continue' | 'stop';
-  context?: T;
+	animation: boolean;
+	runningTransition: 'continue' | 'stop';
+	context?: T;
 }
 
-// Tipo para el reversor de scrollbar
+// Scrollbar reverter type
 type ScrollbarReverter = () => void;
 ```
 
-### ⚡ Tree-shaking optimizado
-Importa solo las utilidades que necesitas para optimizar el bundle.
+### ⚡ Optimized Tree-shaking
+
+Import only the utilities you need to optimize your bundle.
 
 ```typescript
-// Importaciones específicas
+// Specific imports
 import { toInteger, isString } from 'ng-hub-ui-utils';
 import { ScrollBar } from 'ng-hub-ui-utils';
 import { hubRunTransition } from 'ng-hub-ui-utils';
+import { GetPipe, UcfirstPipe } from 'ng-hub-ui-utils';
 ```
 
-## 🚀 Instalación
+## 🚀 Installation
 
 ```bash
 npm install ng-hub-ui-utils
-# o
+# or
 yarn add ng-hub-ui-utils
 ```
 
-## 📖 Uso Rápido
+## 📖 Quick Start
 
 ```typescript
-// Importar utilidades específicas
-import { 
-  toInteger, 
-  isString, 
-  ScrollBar, 
-  getFocusableBoundaryElements 
-} from 'ng-hub-ui-utils';
+// Import specific utilities
+import { toInteger, isString, ScrollBar, getFocusableBoundaryElements, GetPipe, UcfirstPipe } from 'ng-hub-ui-utils';
 
 @Component({
-  selector: 'app-example',
-  template: `<div #container>Content</div>`
+	selector: 'app-example',
+	standalone: true,
+	imports: [GetPipe, UcfirstPipe],
+	template: `
+		<div #container>
+			<h1>{{ title | ucfirst }}</h1>
+			<p>{{ user | get : 'name' : 'Anonymous' }}</p>
+		</div>
+	`
 })
 export class ExampleComponent {
-  constructor(private scrollBar: ScrollBar) {}
-  
-  @ViewChild('container') containerElement!: ElementRef<HTMLElement>;
-  
-  ngAfterViewInit() {
-    // Obtener elementos focusables
-    const [first, last] = getFocusableBoundaryElements(this.containerElement.nativeElement);
-    
-    // Conversión segura
-    const value = toInteger('42');
-    
-    if (isString(this.someProperty)) {
-      console.log('Es un string');
-    }
-  }
-  
-  openOverlay() {
-    // Ocultar scrollbar durante overlay
-    const reverter = this.scrollBar.hide();
-    
-    // Restaurar al cerrar
-    this.overlayRef.onClose(() => reverter());
-  }
+	constructor(private scrollBar: ScrollBar) {}
+
+	@ViewChild('container') containerElement!: ElementRef<HTMLElement>;
+
+	title = 'welcome';
+	user = { name: 'John Doe' };
+
+	ngAfterViewInit() {
+		// Get focusable elements
+		const [first, last] = getFocusableBoundaryElements(this.containerElement.nativeElement);
+
+		// Safe conversion
+		const value = toInteger('42');
+
+		if (isString(this.title)) {
+			console.log("It's a string");
+		}
+	}
+
+	openOverlay() {
+		// Hide scrollbar during overlay
+		const reverter = this.scrollBar.hide();
+
+		// Restore on close
+		this.overlayRef.onClose(() => reverter());
+	}
 }
 ```
 
-## 📊 API de Utilidades
+## 📊 Utilities API
 
-### Funciones de Conversión
-- `toInteger(value: any): number` - Convierte a entero de forma segura
-- `toString(value: any): string` - Convierte a string manejando null/undefined
-- `getValueInRange(value: number, max: number, min?: number): number` - Limita valor a rango
-- `padNumber(value: number): string` - Añade cero inicial a números
+### Conversion Functions
 
-### Funciones de Validación
-- `isString(value: any): value is string` - Verifica si es string
-- `isNumber(value: any): value is number` - Verifica si es número válido
-- `isInteger(value: any): value is number` - Verifica si es entero
-- `isDefined(value: any): boolean` - Verifica si no es null/undefined
-- `isPromise<T>(v: any): v is Promise<T>` - Verifica si es Promise
+-   `toInteger(value: any): number` - Safely converts to integer
+-   `toString(value: any): string` - Converts to string handling null/undefined
+-   `getValueInRange(value: number, max: number, min?: number): number` - Limits value to range
+-   `padNumber(value: number): string` - Adds leading zero to numbers
 
-### Funciones de String
-- `regExpEscape(text: string): string` - Escapa caracteres especiales para RegExp
-- `removeAccents(str: string): string` - Remueve acentos de texto
+### Validation Functions
 
-### Funciones de DOM
-- `closest(element: HTMLElement, selector?: string): HTMLElement | null` - Busca elemento padre por selector
-- `reflow(element: HTMLElement): DOMRect` - Fuerza reflow del navegador
-- `getActiveElement(root?: Document | ShadowRoot): Element | null` - Obtiene elemento activo incluyendo Shadow DOM
+-   `isString(value: any): value is string` - Checks if value is a string
+-   `isNumber(value: any): value is number` - Checks if value is a valid number
+-   `isInteger(value: any): value is number` - Checks if value is an integer
+-   `isDefined(value: any): boolean` - Checks if not null/undefined
+-   `isPromise<T>(v: any): v is Promise<T>` - Checks if value is a Promise
 
-### Funciones de Focus
-- `getFocusableBoundaryElements(element: HTMLElement): HTMLElement[]` - Obtiene primer y último elemento focusable
-- `FOCUSABLE_ELEMENTS_SELECTOR: string` - Selector CSS para elementos focusables
+### String Functions
 
-### Servicios
+-   `regExpEscape(text: string): string` - Escapes special characters for RegExp
+-   `removeAccents(str: string): string` - Removes accents from text
+
+### DOM Functions
+
+-   `closest(element: HTMLElement, selector?: string): HTMLElement | null` - Finds parent element by selector
+-   `reflow(element: HTMLElement): DOMRect` - Forces browser reflow
+-   `getActiveElement(root?: Document | ShadowRoot): Element | null` - Gets active element including Shadow DOM
+
+### Focus Functions
+
+-   `getFocusableBoundaryElements(element: HTMLElement): HTMLElement[]` - Gets first and last focusable elements
+-   `hubFocusTrap(zone, element, stopFocusTrap$, refocusOnClick?)` - Creates focus trap for modals/overlays
+-   `FOCUSABLE_ELEMENTS_SELECTOR: string` - CSS selector for focusable elements
+
+### Pipes
+
+#### GetPipe
+
+```typescript
+// Safe nested property access
+{{ object | get:'path.to.property':'defaultValue' }}
+```
+
+#### IsStringPipe
+
+```typescript
+// Type checking
+@if (value | isString) { <span>String value</span> }
+```
+
+#### IsObjectPipe
+
+```typescript
+// Object checking
+@if (value | isObject) { <span>Object value</span> }
+```
+
+#### IsObservablePipe
+
+```typescript
+// Observable checking
+@if (stream | isObservable) { <span>Observable stream</span> }
+```
+
+#### UcfirstPipe
+
+```typescript
+// Capitalize first letter
+{{ 'hello world' | ucfirst }}  <!-- Hello world -->
+```
+
+#### UnwrapAsyncPipe
+
+```typescript
+// Unwrap Observable or return direct value
+{
+	{
+		observableOrValue | unwrapAsync;
+	}
+}
+```
+
+### Services
+
+#### OverlayService
+
+```typescript
+@Injectable({ providedIn: 'root' })
+class OverlayService {
+  create(config?: OverlayConfig): OverlayRef;
+  position(): OverlayPosition;
+}
+
+class OverlayRef {
+  attach<T>(component: ComponentType<T>): ComponentRef<T>;
+  detach(): void;
+  dispose(): void;
+  updatePosition(): void;
+}
+
+class OverlayPosition {
+  flexibleConnectedTo(element: ElementRef | HTMLElement): this;
+  withPositions(positions: ConnectionPosition[]): this;
+}
+```
 
 #### ScrollBar Service
+
 ```typescript
 @Injectable({ providedIn: 'root' })
 class ScrollBar {
-  hide(): ScrollbarReverter; // Oculta scrollbar con compensación
+  hide(): ScrollbarReverter; // Hides scrollbar with compensation
 }
 ```
 
-#### PopupService<T>
+#### PopupService<T> (Base Class)
+
 ```typescript
-class PopupService<T> {
-  // Sistema base para crear popups y overlays dinámicos
-  // Extender esta clase para crear servicios de popup específicos
+abstract class PopupService<T> {
+  // Base system for creating dynamic popups
+  // Extend this class to create specific popup services
+  open(content?, templateContext?, animation?): { windowRef: ComponentRef<T>; transition$: Observable<void> };
+  close(animation?): Observable<void>;
 }
 ```
 
-### Utilidades de Transición
-- `hubRunTransition<T>()` - Sistema avanzado de transiciones con Observable
-- `getTransitionDurationMs()` - Obtiene duración de transición CSS
-- `runInZone<T>()` - Ejecuta observables dentro de NgZone
+### Transition Utilities
 
-## 🎨 Componentes de Apoyo
+-   `hubRunTransition<T>(zone, element, startFn, options)` - Advanced transition system with Observable
+-   `hubCompleteTransition(element)` - Completes a running transition on an element
+-   `getTransitionDurationMs(element)` - Gets CSS transition duration in milliseconds
+-   `runInZone<T>(zone)` - RxJS operator to execute observables inside NgZone
 
-Esta biblioteca no incluye componentes visuales, sino utilidades de soporte que son utilizadas por otros componentes del ecosistema Hub UI:
+## 🎨 Support Components
 
-| Utilidad | Descripción | Usado por |
-|----------|-------------|-----------|
-| Focus Trap | Manejo de foco en modales/overlays | ng-hub-ui-modal, ng-hub-ui-dropdown |
-| Scrollbar | Compensación de scrollbar | ng-hub-ui-modal, ng-hub-ui-portal |
-| Popup Service | Base para overlays dinámicos | ng-hub-ui-portal, ng-hub-ui-dropdown |
-| Transitions | Animaciones fluidas | ng-hub-ui-accordion, ng-hub-ui-modal |
-| Type Guards | Validación de tipos | ng-hub-ui-table, ng-hub-ui-stepper |
+This library doesn't include visual components, but support utilities used by other components in the Hub UI ecosystem:
 
-## 🤝 Compatibilidad
+| Utility         | Description                         | Used by                                |
+| --------------- | ----------------------------------- | -------------------------------------- |
+| Overlay Service | Flexible overlay positioning system | ng-hub-ui-dropdown, ng-hub-ui-modal    |
+| Focus Trap      | Focus management in modals/overlays | ng-hub-ui-modal, ng-hub-ui-dropdown    |
+| Scrollbar       | Scrollbar compensation              | ng-hub-ui-modal, ng-hub-ui-portal      |
+| Popup Service   | Base class for popup components     | ng-hub-ui-modal, ng-hub-ui-portal      |
+| Transitions     | Smooth animations                   | ng-hub-ui-accordion, ng-hub-ui-modal   |
+| Type Guards     | Type validation functions           | ng-hub-ui-paginable, ng-hub-ui-stepper |
+| Pipes           | Template utilities                  | All Hub UI components                  |
 
-- Angular 15+ 
-- TypeScript 4.8+
-- Node.js 16+
-- Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+## 🤝 Compatibility
 
-## 🛠️ Desarrollo
+-   Angular 15+
+-   TypeScript 4.8+
+-   Node.js 16+
+-   Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+
+## 🛠️ Development
 
 ```bash
-git clone https://github.com/hub-ui/ng-hub-ui
-cd ng-hub-ui
+git clone https://github.com/carlos-morcillo/ng-hub-ui-utils
+cd ng-hub-ui-utils
 npm install
 npm run build
 npm run test
 ```
 
-### Scripts disponibles
+### Available Scripts
 
 ```bash
-npm run build:lib        # Construir biblioteca
-npm run test:unit        # Tests unitarios
-npm run test:e2e         # Tests end-to-end
+npm run build:lib        # Build library
+npm run test:unit        # Unit tests
+npm run test:e2e         # End-to-end tests
 npm run lint             # Linting
-npm run format           # Formatear código
+npm run format           # Format code
 ```
 
 ## 🧪 Testing
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
-import { ScrollBar, toInteger, isString } from 'ng-hub-ui-utils';
+import { ScrollBar, toInteger, isString, GetPipe } from 'ng-hub-ui-utils';
 
 describe('ng-hub-ui-utils', () => {
-  it('should convert values safely', () => {
-    expect(toInteger('42')).toBe(42);
-    expect(toInteger('invalid')).toBe(NaN);
-    expect(isString('hello')).toBe(true);
-    expect(isString(42)).toBe(false);
-  });
-  
-  it('should manage scrollbar', () => {
-    const scrollBar = TestBed.inject(ScrollBar);
-    const reverter = scrollBar.hide();
-    
-    expect(typeof reverter).toBe('function');
-    reverter(); // Cleanup
-  });
+	it('should convert values safely', () => {
+		expect(toInteger('42')).toBe(42);
+		expect(toInteger('invalid')).toBe(NaN);
+		expect(isString('hello')).toBe(true);
+		expect(isString(42)).toBe(false);
+	});
+
+	it('should manage scrollbar', () => {
+		const scrollBar = TestBed.inject(ScrollBar);
+		const reverter = scrollBar.hide();
+
+		expect(typeof reverter).toBe('function');
+		reverter(); // Cleanup
+	});
+
+	it('should get nested properties safely', () => {
+		const pipe = new GetPipe();
+		const obj = { user: { name: 'John' } };
+
+		expect(pipe.transform(obj, 'user.name')).toBe('John');
+		expect(pipe.transform(obj, 'user.age', 0)).toBe(0);
+	});
 });
 ```
 
-## 🐛 Issues y Soporte
+## 🐛 Issues and Support
 
-- [Reportar bug](https://github.com/hub-ui/ng-hub-ui/issues)
-- [Solicitar feature](https://github.com/hub-ui/ng-hub-ui/issues/new?template=feature_request.md)
-- [Discusiones](https://github.com/hub-ui/ng-hub-ui/discussions)
+-   [Report a bug](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues)
+-   [Request a feature](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues/new?template=feature_request.md)
+-   [Discussions](https://github.com/carlos-morcillo/ng-hub-ui-utils/discussions)
 
-## ☕ Apoya el proyecto
+## ☕ Support the Project
 
-Si Hub UI te ha sido útil, considera apoyar su desarrollo:
+If Hub UI has been useful to you, consider supporting its development:
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/hubui)
-[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-red.svg?style=flat-square&logo=github)](https://github.com/sponsors/hub-ui)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg?style=flat-square&logo=buy-me-a-coffee)](https://buymeacoffee.com/carlosmorcillo)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-red.svg?style=flat-square&logo=github)](https://github.com/sponsors/carlos-morcillo)
 
-Tu apoyo ayuda a:
-- 🚀 Mantener el proyecto activo
-- 🐛 Resolver bugs más rápido  
-- ✨ Desarrollar nuevas características
-- 📚 Mejorar la documentación
+Your support helps to:
 
-## 🤝 Contribuciones
+-   🚀 Keep the project active
+-   🐛 Fix bugs faster
+-   ✨ Develop new features
+-   📚 Improve documentation
 
-¡Las contribuciones son bienvenidas! Por favor:
+## 🤝 Contributions
 
-1. 🍴 Fork el repositorio
-2. 🌿 Crea una rama para tu feature (`git checkout -b feature/nueva-utilidad`)
-3. ✍️ Commit tus cambios (`git commit -am 'feat: añade nueva utilidad'`)
-4. 📤 Push a la rama (`git push origin feature/nueva-utilidad`)
-5. 🔄 Abre un Pull Request
+Contributions are welcome! Please:
 
-Consulta nuestras [guías de contribución](CONTRIBUTING.md) para más detalles.
+1. 🍴 Fork the repository
+2. 🌿 Create a branch for your feature (`git checkout -b feature/new-utility`)
+3. ✍️ Commit your changes (`git commit -am 'feat: add new utility'`)
+4. 📤 Push to the branch (`git push origin feature/new-utility`)
+5. 🔄 Open a Pull Request
 
-## 📄 Licencia
+Check our [contribution guidelines](CONTRIBUTING.md) for more details.
 
-MIT © [Hub UI Team](https://github.com/hub-ui)
+## 📄 License
+
+MIT © [Hub UI Team](https://github.com/carlos-morcillo)
 
 ```
 MIT License
@@ -402,6 +592,6 @@ SOFTWARE.
 
 ---
 
-⭐ **Si te gusta este proyecto, ¡no olvides darle una estrella en GitHub!**
+⭐ **If you like this project, don't forget to give it a star on GitHub!**
 
-[![GitHub stars](https://img.shields.io/github/stars/hub-ui/ng-hub-ui.svg?style=social&label=Star)](https://github.com/hub-ui/ng-hub-ui)
+[![GitHub stars](https://img.shields.io/github/stars/carlos-morcillo/ng-hub-ui-utils.svg?style=social&label=Star)](https://github.com/carlos-morcillo/ng-hub-ui-utils)
