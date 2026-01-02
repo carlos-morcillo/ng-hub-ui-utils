@@ -19,7 +19,6 @@ Esta biblioteca es parte del ecosistema **Hub UI**, que incluye:
 - 📜 **ng-hub-ui-dropdown** - Componentes dropdown
 - 📝 **ng-hub-ui-list** - Componentes de lista
 - 🪟 [**ng-hub-ui-modal**](https://github.com/carlos-morcillo/ng-hub-ui-modal) - Componentes de modal
-- 🗂️ [**ng-hub-ui-paginable**](https://github.com/carlos-morcillo/ng-hub-ui-paginable) - Tablas con paginación
 - 🌀 [**ng-hub-ui-portal**](https://github.com/carlos-morcillo/ng-hub-ui-portal) - Sistema de portales
 - 🔀 [**ng-hub-ui-sortable**](https://github.com/carlos-morcillo/ng-hub-ui-sortable) - Componentes sortable
 - 📊 [**ng-hub-ui-stepper**](https://github.com/carlos-morcillo/ng-hub-ui-stepper) - Componentes step-by-step
@@ -456,7 +455,7 @@ Esta biblioteca no incluye componentes visuales, sino utilidades de soporte que 
 | Scrollbar | Compensación de scrollbar | ng-hub-ui-modal, ng-hub-ui-portal |
 | Popup Service | Clase base para componentes popup | ng-hub-ui-modal, ng-hub-ui-portal |
 | Transitions | Animaciones fluidas | ng-hub-ui-accordion, ng-hub-ui-modal |
-| Type Guards | Funciones de validación de tipos | ng-hub-ui-paginable, ng-hub-ui-stepper |
+| Type Guards | Funciones de validación de tipos | ng-hub-ui-stepper                      |
 | Pipes | Utilidades de template | Todos los componentes Hub UI |
 
 ## 🤝 Compatibilidad

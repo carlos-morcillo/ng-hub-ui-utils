@@ -42,6 +42,63 @@ export function isDefined(value: any): boolean {
 }
 
 /**
+ * Determines if two objects or values are equivalent.
+ *
+ * @param o1 Object or value to compare.
+ * @param o2 Object or value to compare.
+ * @returns true if arguments are equal.
+ */
+export function equals(o1: any, o2: any): boolean {
+	if (o1 === o2) {
+		return true;
+	}
+	if (o1 === null || o2 === null) {
+		return false;
+	}
+	if (o1 !== o1 && o2 !== o2) {
+		return true;
+	} // NaN === NaN
+	let t1 = typeof o1,
+		t2 = typeof o2,
+		length: number,
+		key: any,
+		keySet: any;
+	if (t1 == t2 && t1 == 'object') {
+		if (Array.isArray(o1)) {
+			if (!Array.isArray(o2)) {
+				return false;
+			}
+			if ((length = o1.length) == o2.length) {
+				for (key = 0; key < length; key++) {
+					if (!equals(o1[key], o2[key])) {
+						return false;
+					}
+				}
+				return true;
+			}
+		} else {
+			if (Array.isArray(o2)) {
+				return false;
+			}
+			keySet = Object.create(null);
+			for (key in o1) {
+				if (!equals(o1[key], o2[key])) {
+					return false;
+				}
+				keySet[key] = true;
+			}
+			for (key in o2) {
+				if (!(key in keySet) && typeof o2[key] !== 'undefined') {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
  * Checks if a value is a Promise.
  *
  * @param {any} v - The parameter `v` in the `isPromise` function represents any value that is being checked to determine if it is
@@ -135,6 +192,57 @@ export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
 
 export function removeAccents(str: string): string {
 	return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+/**
+ * Replaces placeholders in a string with corresponding values from a given object.
+ *
+ * @param expr a string that represents the expression to be interpolated.
+ * @param params an optional object that contains the values to be interpolated into the expr string.
+ * @returns the interpolated string.
+ */
+export function interpolateString(
+	expr: string = '',
+	params: any = {},
+	templateMatcher: RegExp = /{{\s?([^{}\s]*)\s?}}/g
+) {
+	if (!params) {
+		return expr;
+	}
+
+	return expr.replace(templateMatcher, (substring: string, b: string) => {
+		let r = getValue(params, b);
+		return isDefined(r) ? r : substring;
+	});
+}
+
+/**
+ * Retrieves the value of a nested property from an object using dot notation.
+ *
+ * @param target the object from which you want to retrieve a value.
+ * @param key a string that represents the property or nested properties of the target object.
+ * @returns the value of the specified key in the target object.
+ */
+export function getValue(target: any, key: string): any {
+	let keys = typeof key === 'string' ? key.split('.') : [key];
+	key = '';
+	do {
+		key += keys.shift();
+		if (
+			isDefined(target) &&
+			isDefined(target[key]) &&
+			(typeof target[key] === 'object' || !keys.length)
+		) {
+			target = target[key];
+			key = '';
+		} else if (!keys.length) {
+			target = undefined;
+		} else {
+			key += '.';
+		}
+	} while (keys.length);
+
+	return target;
 }
 
 /**
