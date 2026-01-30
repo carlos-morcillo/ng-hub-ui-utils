@@ -8,22 +8,20 @@
 
 [Español](./README.es.md) | **English**
 
-## 🏡 Part of the Hub UI Family
+## 🧩 Library Family `ng-hub-ui`
 
-This library is part of the **Hub UI** ecosystem, which includes:
+This library is part of the **ng-hub-ui** ecosystem:
 
--   🎨 [**ng-hub-ui-accordion**](https://github.com/carlos-morcillo/ng-hub-ui-accordion) - Accordion components
--   📱 **ng-hub-ui-action-sheet** - Mobile action sheets
--   👤 [**ng-hub-ui-avatar**](https://github.com/carlos-morcillo/ng-hub-ui-avatar) - Avatar components
--   📋 [**ng-hub-ui-board**](https://github.com/carlos-morcillo/ng-hub-ui-board) - Kanban-style boards
--   🧭 [**ng-hub-ui-breadcrumbs**](https://github.com/carlos-morcillo/ng-hub-ui-breadcrumbs) - Navigation breadcrumbs
--   📜 **ng-hub-ui-dropdown** - Dropdown components
--   📝 **ng-hub-ui-list** - List components
--   🪟 [**ng-hub-ui-modal**](https://github.com/carlos-morcillo/ng-hub-ui-modal) - Modal components
--   🌀 [**ng-hub-ui-portal**](https://github.com/carlos-morcillo/ng-hub-ui-portal) - Portal system
--   🔀 [**ng-hub-ui-sortable**](https://github.com/carlos-morcillo/ng-hub-ui-sortable) - Sortable components
--   📊 [**ng-hub-ui-stepper**](https://github.com/carlos-morcillo/ng-hub-ui-stepper) - Step-by-step components
--   🛠️ [**ng-hub-ui-utils**](https://github.com/carlos-morcillo/ng-hub-ui-utils) ← you are here - Common utilities
+- [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion)
+- [**ng-hub-ui-avatar**](https://www.npmjs.com/package/ng-hub-ui-avatar)
+- [**ng-hub-ui-board**](https://www.npmjs.com/package/ng-hub-ui-board)
+- [**ng-hub-ui-breadcrumbs**](https://www.npmjs.com/package/ng-hub-ui-breadcrumbs)
+- [**ng-hub-ui-calendar**](https://www.npmjs.com/package/ng-hub-ui-calendar)
+- [**ng-hub-ui-modal**](https://www.npmjs.com/package/ng-hub-ui-modal)
+- [**ng-hub-ui-paginable**](https://www.npmjs.com/package/ng-hub-ui-paginable)
+- [**ng-hub-ui-portal**](https://www.npmjs.com/package/ng-hub-ui-portal)
+- [**ng-hub-ui-stepper**](https://www.npmjs.com/package/ng-hub-ui-stepper)
+- [**ng-hub-ui-utils**](https://www.npmjs.com/package/ng-hub-ui-utils) ← You are here
 
 ## 💡 Inspiration
 
@@ -462,8 +460,8 @@ This library doesn't include visual components, but support utilities used by ot
 
 | Utility         | Description                         | Used by                                |
 | --------------- | ----------------------------------- | -------------------------------------- |
-| Overlay Service | Flexible overlay positioning system | ng-hub-ui-dropdown, ng-hub-ui-modal    |
-| Focus Trap      | Focus management in modals/overlays | ng-hub-ui-modal, ng-hub-ui-dropdown    |
+| Overlay Service | Flexible overlay positioning system | ng-hub-ui-modal, ng-hub-ui-portal      |
+| Focus Trap      | Focus management in modals/overlays | ng-hub-ui-modal, ng-hub-ui-portal      |
 | Scrollbar       | Scrollbar compensation              | ng-hub-ui-modal, ng-hub-ui-portal      |
 | Popup Service   | Base class for popup components     | ng-hub-ui-modal, ng-hub-ui-portal      |
 | Transitions     | Smooth animations                   | ng-hub-ui-accordion, ng-hub-ui-modal   |
