@@ -3,8 +3,8 @@
  */
 
 export * from './lib/focus-trap';
-export * from './lib/i18n/hub-translation.provider';
-export * from './lib/i18n/hub-translation.service';
+export * from './lib/i18n/translation.provider';
+export * from './lib/i18n/translation.service';
 export * from './lib/i18n/translation.tokens';
 export * from './lib/overlay';
 export { GetPipe } from './lib/pipes/get.pipe';

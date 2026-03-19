@@ -1,8 +1,8 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
+import { HubTranslationService } from '../i18n/translation.service';
 import { TranslatePipe } from './translate.pipe';
-import { HubTranslationService } from '../i18n/hub-translation.service';
 
 /**
  * Test suite for TranslatePipe
@@ -17,14 +17,10 @@ describe('TranslatePipe', () => {
 	beforeEach(() => {
 		translationObserver = new Subject();
 
-		translationService = jasmine.createSpyObj('HubTranslationService', [
-			'getTranslation'
-		]);
+		translationService = jasmine.createSpyObj('HubTranslationService', ['getTranslation']);
 		translationService.translationObserver = translationObserver.asObservable();
 
-		changeDetectorRef = jasmine.createSpyObj('ChangeDetectorRef', [
-			'markForCheck'
-		]);
+		changeDetectorRef = jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']);
 
 		TestBed.configureTestingModule({
 			providers: [
@@ -103,9 +99,7 @@ describe('TranslatePipe', () => {
 		});
 
 		it('should handle multiple interpolation parameters', () => {
-			translationService.getTranslation.and.returnValue(
-				'{{greeting}} {{name}}!'
-			);
+			translationService.getTranslation.and.returnValue('{{greeting}} {{name}}!');
 			const result = pipe.transform('message', { greeting: 'Hello', name: 'Bob' });
 			expect(result).toBe('Hello Bob!');
 		});

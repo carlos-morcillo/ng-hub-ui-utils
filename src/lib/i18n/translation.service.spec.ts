@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HubTranslationService } from './hub-translation.service';
+import { HubTranslationService } from './translation.service';
 import { HUB_TRANSLATION_CONFIG } from './translation.tokens';
 
 const DICTIONARIES = {

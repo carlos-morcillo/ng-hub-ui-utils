@@ -1,5 +1,5 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
-import { HubTranslationService } from './hub-translation.service';
+import { HubTranslationService } from './translation.service';
 import { HUB_TRANSLATION_CONFIG, HubTranslationConfig } from './translation.tokens';
 
 /**

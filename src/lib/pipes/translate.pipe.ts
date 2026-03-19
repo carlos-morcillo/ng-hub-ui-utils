@@ -1,13 +1,7 @@
-import {
-	ChangeDetectorRef,
-	OnDestroy,
-	Pipe,
-	PipeTransform,
-	inject
-} from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { HubTranslationService } from '../i18n/translation.service';
 import { equals, interpolateString, isDefined } from '../util';
-import { HubTranslationService } from '../i18n/hub-translation.service';
 
 @Pipe({
 	name: 'translate',
@@ -28,10 +22,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 	 * Updates the value of a key by interpolating the translation and marking for change detection.
 	 */
 	updateValue(key: string, interpolateParams?: Object): void {
-		const value = interpolateString(
-			this._translationSvc.getTranslation(key),
-			interpolateParams
-		);
+		const value = interpolateString(this._translationSvc.getTranslation(key), interpolateParams);
 		this.value = value !== undefined ? value : key;
 		this.lastKey = key;
 		this._ref.markForCheck();
@@ -61,9 +52,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 				try {
 					interpolateParams = JSON.parse(validArgs);
 				} catch (e) {
-					throw new SyntaxError(
-						`Wrong parameter in TranslatePipe. Expected a valid Object, received: ${args[0]}`
-					);
+					throw new SyntaxError(`Wrong parameter in TranslatePipe. Expected a valid Object, received: ${args[0]}`);
 				}
 			} else if (typeof args[0] === 'object' && !Array.isArray(args[0])) {
 				interpolateParams = args[0];
@@ -83,13 +72,12 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 		this._dispose();
 
 		if (!this.translationSubscription) {
-			this.translationSubscription =
-				this._translationSvc.translationObserver.subscribe(() => {
-					if (this.lastKey) {
-						this.lastKey = null;
-						this.updateValue(query, interpolateParams);
-					}
-				});
+			this.translationSubscription = this._translationSvc.translationObserver.subscribe(() => {
+				if (this.lastKey) {
+					this.lastKey = null;
+					this.updateValue(query, interpolateParams);
+				}
+			});
 		}
 		return this.value;
 	}
