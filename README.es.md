@@ -1,25 +1,38 @@
-# Hub UI - Angular Utilities Library
+# ng-hub-ui-utils
 
 [![NPM Version](https://img.shields.io/npm/v/ng-hub-ui-utils.svg)](https://www.npmjs.com/package/ng-hub-ui-utils)
 [![License](https://img.shields.io/npm/l/ng-hub-ui-utils.svg)](LICENSE)
-[![Build Status](https://img.shields.io/github/workflow/status/carlos-morcillo/ng-hub-ui-utils/CI)](https://github.com/carlos-morcillo/ng-hub-ui-utils/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/carlos-morcillo/ng-hub-ui/ci.yml)](https://github.com/carlos-morcillo/ng-hub-ui/actions)
 
 > Biblioteca de utilidades común para Angular, soporte fundamental del ecosistema Hub UI.
 
 **Español** | [English](./README.md)
+
+## Documentación y ejemplos en vivo
+
+Este paquete forma parte de [Hub UI](https://hubui.dev/), una colección de bibliotecas de componentes Angular para aplicaciones standalone.
+
+- Documentación: https://hubui.dev/utils/overview/
+- Ejemplos en vivo: https://hubui.dev/utils/examples/
+- Hub UI: https://hubui.dev/
 
 ## 🧩 Familia de bibliotecas `ng-hub-ui`
 
 Esta biblioteca forma parte del ecosistema **ng-hub-ui**:
 
 - [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion)
+- [**ng-hub-ui-action-sheet**](https://www.npmjs.com/package/ng-hub-ui-action-sheet)
 - [**ng-hub-ui-avatar**](https://www.npmjs.com/package/ng-hub-ui-avatar)
 - [**ng-hub-ui-board**](https://www.npmjs.com/package/ng-hub-ui-board)
 - [**ng-hub-ui-breadcrumbs**](https://www.npmjs.com/package/ng-hub-ui-breadcrumbs)
 - [**ng-hub-ui-calendar**](https://www.npmjs.com/package/ng-hub-ui-calendar)
+- [**ng-hub-ui-dropdown**](https://www.npmjs.com/package/ng-hub-ui-dropdown)
+- [**ng-hub-ui-history**](https://www.npmjs.com/package/ng-hub-ui-history)
 - [**ng-hub-ui-modal**](https://www.npmjs.com/package/ng-hub-ui-modal)
+- [**ng-hub-ui-nav**](https://www.npmjs.com/package/ng-hub-ui-nav)
 - [**ng-hub-ui-paginable**](https://www.npmjs.com/package/ng-hub-ui-paginable)
 - [**ng-hub-ui-portal**](https://www.npmjs.com/package/ng-hub-ui-portal)
+- [**ng-hub-ui-sortable**](https://www.npmjs.com/package/ng-hub-ui-sortable)
 - [**ng-hub-ui-stepper**](https://www.npmjs.com/package/ng-hub-ui-stepper)
 - [**ng-hub-ui-utils**](https://www.npmjs.com/package/ng-hub-ui-utils) ← Estás aquí
 
@@ -516,11 +529,11 @@ describe('ng-hub-ui-utils', () => {
 });
 ```
 
-## 🐛 Issues y Soporte
+## 🐛 Soporte e incidencias
 
 - [Reportar bug](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues)
 - [Solicitar feature](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues/new?template=feature_request.md)
-- [Discusiones](https://github.com/carlos-morcillo/ng-hub-ui-utils/discussions)
+- [Repositorio](https://github.com/carlos-morcillo/ng-hub-ui-utils)
 
 ## ☕ Apoya el proyecto
 
@@ -549,7 +562,7 @@ Consulta nuestras [guías de contribución](CONTRIBUTING.md) para más detalles.
 
 ## 📄 Licencia
 
-MIT © [Hub UI Team](https://github.com/carlos-morcillo)
+MIT © colaboradores de Hub UI
 
 ```
 MIT License
@@ -579,4 +592,4 @@ SOFTWARE.
 
 ⭐ **Si te gusta este proyecto, ¡no olvides darle una estrella en GitHub!**
 
-[![GitHub stars](https://img.shields.io/github/stars/carlos-morcillo/ng-hub-ui-utils.svg?style=social&label=Star)](https://github.com/carlos-morcillo/ng-hub-ui-utils)
+[![GitHub stars](https://img.shields.io/github/stars/carlos-morcillo/ng-hub-ui.svg?style=social&label=Star)](https://github.com/carlos-morcillo/ng-hub-ui)
