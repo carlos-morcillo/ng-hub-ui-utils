@@ -8,7 +8,32 @@
 
 **Español** | [English](./README.md)
 
-## Documentación y ejemplos en vivo
+## 📝 Descripción
+
+`ng-hub-ui-utils` es la biblioteca de utilidades fundamental de todo el ecosistema Hub UI. Proporciona un conjunto cuidado de funciones de apoyo agnósticas al framework, type guards, pipes standalone de Angular, un sistema flexible de overlay/popup, helpers de focus-trap y accesibilidad, compensación de scrollbar, un motor de transiciones fluidas y un sistema ligero de internacionalización (i18n). No incluye componentes visuales: en su lugar, da soporte al comportamiento compartido de bajo nivel utilizado por el resto de las bibliotecas `ng-hub-ui`, manteniéndose tree-shakable para que solo empaquetes lo que importes.
+
+## 📑 Tabla de Contenidos
+
+- [Descripción](#-descripción)
+- [Documentación y ejemplos en vivo](#-documentación-y-ejemplos-en-vivo)
+- [Familia de bibliotecas `ng-hub-ui`](#-familia-de-bibliotecas-ng-hub-ui)
+- [Inspiración](#-inspiración)
+- [Características](#-características)
+- [Instalación](#-instalación)
+- [Uso Rápido](#-uso-rápido)
+- [Internacionalización (i18n)](#-internacionalización-i18n)
+- [API de Utilidades](#-api-de-utilidades)
+- [Componentes de Apoyo](#-componentes-de-apoyo)
+- [Compatibilidad](#-compatibilidad)
+- [Desarrollo](#-desarrollo)
+- [Testing](#-testing)
+- [Changelog](#-changelog)
+- [Soporte e incidencias](#-soporte-e-incidencias)
+- [Apoya el proyecto](#-apoya-el-proyecto)
+- [Contribuciones](#-contribuciones)
+- [Licencia](#-licencia)
+
+## 📚 Documentación y ejemplos en vivo
 
 Este paquete forma parte de [Hub UI](https://hubui.dev/), una colección de bibliotecas de componentes Angular para aplicaciones standalone.
 
@@ -20,18 +45,23 @@ Este paquete forma parte de [Hub UI](https://hubui.dev/), una colección de bibl
 
 Esta biblioteca forma parte del ecosistema **ng-hub-ui**:
 
-- [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion)
+- [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion) (obsoleta — usa ng-hub-ui-panels)
 - [**ng-hub-ui-action-sheet**](https://www.npmjs.com/package/ng-hub-ui-action-sheet)
 - [**ng-hub-ui-avatar**](https://www.npmjs.com/package/ng-hub-ui-avatar)
 - [**ng-hub-ui-board**](https://www.npmjs.com/package/ng-hub-ui-board)
 - [**ng-hub-ui-breadcrumbs**](https://www.npmjs.com/package/ng-hub-ui-breadcrumbs)
 - [**ng-hub-ui-calendar**](https://www.npmjs.com/package/ng-hub-ui-calendar)
 - [**ng-hub-ui-dropdown**](https://www.npmjs.com/package/ng-hub-ui-dropdown)
+- [**ng-hub-ui-ds**](https://www.npmjs.com/package/ng-hub-ui-ds)
+- [**ng-hub-ui-forms**](https://www.npmjs.com/package/ng-hub-ui-forms)
 - [**ng-hub-ui-history**](https://www.npmjs.com/package/ng-hub-ui-history)
+- [**ng-hub-ui-milestones**](https://www.npmjs.com/package/ng-hub-ui-milestones)
 - [**ng-hub-ui-modal**](https://www.npmjs.com/package/ng-hub-ui-modal)
 - [**ng-hub-ui-nav**](https://www.npmjs.com/package/ng-hub-ui-nav)
 - [**ng-hub-ui-paginable**](https://www.npmjs.com/package/ng-hub-ui-paginable)
+- [**ng-hub-ui-panels**](https://www.npmjs.com/package/ng-hub-ui-panels)
 - [**ng-hub-ui-portal**](https://www.npmjs.com/package/ng-hub-ui-portal)
+- [**ng-hub-ui-skeleton**](https://www.npmjs.com/package/ng-hub-ui-skeleton)
 - [**ng-hub-ui-sortable**](https://www.npmjs.com/package/ng-hub-ui-sortable)
 - [**ng-hub-ui-stepper**](https://www.npmjs.com/package/ng-hub-ui-stepper)
 - [**ng-hub-ui-utils**](https://www.npmjs.com/package/ng-hub-ui-utils) ← Estás aquí
@@ -156,6 +186,45 @@ hubRunTransition(
   console.log('Transición completada');
 });
 ```
+
+### 🌐 Internacionalización (i18n)
+
+Sistema de traducción ligero basado en inyección de dependencias con un pipe reactivo. Registra los diccionarios de traducción en el arranque con `provideHubTranslation` y traduce claves en los templates con el pipe `translate`.
+
+```typescript
+import { provideHubTranslation, HubTranslationService, TranslatePipe } from 'ng-hub-ui-utils';
+
+// En la configuración / providers de arranque de tu aplicación
+bootstrapApplication(AppComponent, {
+	providers: [
+		provideHubTranslation({
+			language: 'es',
+			fallbackLanguage: 'en',
+			dictionaries: {
+				en: { greeting: 'Hello {name}!' },
+				es: { greeting: '¡Hola {name}!' }
+			}
+		})
+	]
+});
+```
+
+```typescript
+@Component({
+	standalone: true,
+	imports: [TranslatePipe],
+	template: `
+		<!-- Clave simple -->
+		<p>{{ 'greeting' | translate }}</p>
+
+		<!-- Con parámetros de interpolación -->
+		<p>{{ 'greeting' | translate: { name: 'Carlos' } }}</p>
+	`
+})
+export class ExampleComponent {}
+```
+
+Consulta [Internacionalización (i18n)](#-internacionalización-i18n) para la API completa.
 
 ### 🧰 Pipes Standalone de Angular
 
@@ -342,6 +411,91 @@ export class ExampleComponent {
 }
 ```
 
+## 🌐 Internacionalización (i18n)
+
+El sistema de i18n (disponible desde `v1.2.0`) permite registrar diccionarios de traducción mediante inyección de dependencias y resolver claves de forma reactiva en los templates. Al actualizar las traducciones activas en tiempo de ejecución, cualquier pipe `translate` de la vista se refresca automáticamente.
+
+### `provideHubTranslation(config?)`
+
+Helper de provider de entorno que registra `HubTranslationService` y su configuración. Llámalo una sola vez en los providers de arranque de tu aplicación.
+
+```typescript
+function provideHubTranslation(config?: HubTranslationConfig): EnvironmentProviders;
+```
+
+### `HubTranslationConfig`
+
+```typescript
+interface HubTranslationConfig {
+	/** Mapa de código de idioma → diccionario de traducciones. */
+	dictionaries?: Record<string, Record<string, any>>;
+	/** Código del idioma activo (por defecto fallbackLanguage y, en su defecto, 'en'). */
+	language?: string;
+	/** Idioma de respaldo fusionado bajo el idioma activo (por defecto 'en'). */
+	fallbackLanguage?: string;
+}
+```
+
+La configuración también se expone a través del token de inyección `HUB_TRANSLATION_CONFIG` para escenarios avanzados.
+
+### `HubTranslationService`
+
+Servicio inyectable que mantiene las traducciones activas y notifica a los suscriptores cuando cambian.
+
+```typescript
+@Injectable()
+class HubTranslationService {
+	/** Mapa plano de traducciones activas. */
+	translations: Record<string, string>;
+	/** Emite cada vez que se actualizan las traducciones activas. */
+	translationObserver: Observable<Record<string, string>>;
+
+	/** Resuelve una clave (admite notación con puntos) contra las traducciones activas. */
+	getTranslation(key: string): any;
+	/** Reemplaza las traducciones activas, fusionándolas sobre el diccionario de respaldo. */
+	setTranslations(translations?: Record<string, string>): void;
+}
+```
+
+```typescript
+import { HubTranslationService } from 'ng-hub-ui-utils';
+
+@Component({ /* ... */ })
+export class LanguageSwitcherComponent {
+	private translationSvc = inject(HubTranslationService);
+
+	switchToSpanish() {
+		// Cambia el diccionario activo en tiempo de ejecución; el pipe `translate` se actualiza solo.
+		this.translationSvc.setTranslations({ greeting: '¡Hola {name}!' });
+	}
+}
+```
+
+### `TranslatePipe` (`translate`)
+
+Pipe standalone impuro que resuelve una clave de traducción con parámetros de interpolación opcionales. Se suscribe al servicio para mantener la vista sincronizada cuando cambian las traducciones.
+
+```typescript
+// Clave simple
+{{ 'greeting' | translate }}
+
+// Con un objeto de parámetros de interpolación
+{{ 'greeting' | translate: { name: 'Carlos' } }}
+
+// Los parámetros también pueden escribirse en línea como un string de pseudo-objeto
+{{ 'greeting' | translate: "{name: 'Carlos'}" }}
+```
+
+Si una clave no tiene traducción, se devuelve la propia clave. Los tokens de interpolación usan la sintaxis `{nombreParam}` (gestionada por la utilidad `interpolateString`).
+
+### Utilidades de apoyo
+
+Estas funciones dan soporte al sistema de i18n y se exportan para uso directo:
+
+- `getValue(target: any, key: string): any` - Lee un valor anidado mediante una clave en notación con puntos.
+- `interpolateString(text: string, params?: object): string` - Reemplaza los marcadores `{token}` en un string.
+- `equals(o1: any, o2: any): boolean` - Comprobación de igualdad profunda usada para memoizar el valor del pipe.
+
 ## 📊 API de Utilidades
 
 ### Funciones de Conversión
@@ -472,7 +626,7 @@ Esta biblioteca no incluye componentes visuales, sino utilidades de soporte que 
 
 ## 🤝 Compatibilidad
 
-- Angular 15+ 
+- Angular 16+
 - TypeScript 4.8+
 - Node.js 16+
 - Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
@@ -528,6 +682,15 @@ describe('ng-hub-ui-utils', () => {
   });
 });
 ```
+
+## 📋 Changelog
+
+Todos los cambios relevantes están documentados en el [CHANGELOG.md](./CHANGELOG.md), siguiendo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) y [Versionado Semántico](https://semver.org/spec/v2.0.0.html).
+
+Cambios destacados recientes:
+
+- **1.2.1** — Renombrado de los archivos internos de i18n y refresco de `TranslatePipe`; añadida una suite de tests para `HubTranslationService`.
+- **1.2.0** — Añadido el sistema de i18n (`HubTranslationService`, `provideHubTranslation`, `TranslatePipe`, tokens de traducción) junto con las utilidades `equals`, `interpolateString` y `getValue`.
 
 ## 🐛 Soporte e incidencias
 

@@ -14,15 +14,21 @@ import { GetPipe } from './get.pipe';
 		<div id="deep-nested">{{ testObject | get:'details.address.city' }}</div>
 		<div id="array-property">{{ testObject | get:'hobbies.0' }}</div>
 		<div id="with-default">{{ testObject | get:'nonExistent':'Default Value' }}</div>
-		<div id="null-path">{{ testObject | get:null }}</div>
-		<div id="undefined-path">{{ testObject | get:undefined }}</div>
+		<div id="null-path">{{ testObject | get:nullPath }}</div>
+		<div id="undefined-path">{{ testObject | get:undefinedPath }}</div>
 		<div id="empty-string-path">{{ testObject | get:'' }}</div>
-		<div id="number-path">{{ testObject | get:123 }}</div>
+		<div id="number-path">{{ testObject | get:numberPath }}</div>
 	`,
 	standalone: true,
 	imports: [GetPipe]
 })
 class TestComponent {
+	// Intentionally-invalid path inputs used to verify the pipe's defensive handling
+	// of non-string paths in templates. Cast through `unknown` to satisfy the typed API.
+	nullPath = null as unknown as string;
+	undefinedPath = undefined as unknown as string;
+	numberPath = 123 as unknown as string;
+
 	testObject = {
 		name: 'John Doe',
 		details: {

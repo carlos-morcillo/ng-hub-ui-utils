@@ -8,7 +8,32 @@
 
 [Español](./README.es.md) | **English**
 
-## Documentation and Live Examples
+## 📝 Description
+
+`ng-hub-ui-utils` is the foundational utilities library for the entire Hub UI ecosystem. It provides a curated set of framework-agnostic helper functions, type guards, standalone Angular pipes, a flexible overlay/popup system, focus-trap and accessibility helpers, scrollbar compensation, a smooth transition engine, and a lightweight internationalization (i18n) system. It ships no visual components — instead it powers the shared low-level behavior used across the rest of the `ng-hub-ui` libraries, while remaining tree-shakable so you only bundle what you import.
+
+## 📑 Table of Contents
+
+- [Description](#-description)
+- [Documentation and Live Examples](#-documentation-and-live-examples)
+- [Library Family `ng-hub-ui`](#-library-family-ng-hub-ui)
+- [Inspiration](#-inspiration)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+- [Internationalization (i18n)](#-internationalization-i18n)
+- [Utilities API](#-utilities-api)
+- [Support Components](#-support-components)
+- [Compatibility](#-compatibility)
+- [Development](#-development)
+- [Testing](#-testing)
+- [Changelog](#-changelog)
+- [Issues and Support](#-issues-and-support)
+- [Support the Project](#-support-the-project)
+- [Contributions](#-contributions)
+- [License](#-license)
+
+## 📚 Documentation and Live Examples
 
 This package is part of [Hub UI](https://hubui.dev/), a collection of Angular component libraries for standalone apps.
 
@@ -20,18 +45,23 @@ This package is part of [Hub UI](https://hubui.dev/), a collection of Angular co
 
 This library is part of the **ng-hub-ui** ecosystem:
 
-- [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion)
+- [**ng-hub-ui-accordion**](https://www.npmjs.com/package/ng-hub-ui-accordion) (deprecated — use ng-hub-ui-panels)
 - [**ng-hub-ui-action-sheet**](https://www.npmjs.com/package/ng-hub-ui-action-sheet)
 - [**ng-hub-ui-avatar**](https://www.npmjs.com/package/ng-hub-ui-avatar)
 - [**ng-hub-ui-board**](https://www.npmjs.com/package/ng-hub-ui-board)
 - [**ng-hub-ui-breadcrumbs**](https://www.npmjs.com/package/ng-hub-ui-breadcrumbs)
 - [**ng-hub-ui-calendar**](https://www.npmjs.com/package/ng-hub-ui-calendar)
 - [**ng-hub-ui-dropdown**](https://www.npmjs.com/package/ng-hub-ui-dropdown)
+- [**ng-hub-ui-ds**](https://www.npmjs.com/package/ng-hub-ui-ds)
+- [**ng-hub-ui-forms**](https://www.npmjs.com/package/ng-hub-ui-forms)
 - [**ng-hub-ui-history**](https://www.npmjs.com/package/ng-hub-ui-history)
+- [**ng-hub-ui-milestones**](https://www.npmjs.com/package/ng-hub-ui-milestones)
 - [**ng-hub-ui-modal**](https://www.npmjs.com/package/ng-hub-ui-modal)
 - [**ng-hub-ui-nav**](https://www.npmjs.com/package/ng-hub-ui-nav)
 - [**ng-hub-ui-paginable**](https://www.npmjs.com/package/ng-hub-ui-paginable)
+- [**ng-hub-ui-panels**](https://www.npmjs.com/package/ng-hub-ui-panels)
 - [**ng-hub-ui-portal**](https://www.npmjs.com/package/ng-hub-ui-portal)
+- [**ng-hub-ui-skeleton**](https://www.npmjs.com/package/ng-hub-ui-skeleton)
 - [**ng-hub-ui-sortable**](https://www.npmjs.com/package/ng-hub-ui-sortable)
 - [**ng-hub-ui-stepper**](https://www.npmjs.com/package/ng-hub-ui-stepper)
 - [**ng-hub-ui-utils**](https://www.npmjs.com/package/ng-hub-ui-utils) ← You are here
@@ -159,6 +189,45 @@ hubRunTransition(
 	console.log('Transition completed');
 });
 ```
+
+### 🌐 Internationalization (i18n)
+
+Lightweight, dependency-injection based translation system with a reactive pipe. Register translation dictionaries at bootstrap with `provideHubTranslation`, then translate keys in templates with the `translate` pipe.
+
+```typescript
+import { provideHubTranslation, HubTranslationService, TranslatePipe } from 'ng-hub-ui-utils';
+
+// In your application config / bootstrap providers
+bootstrapApplication(AppComponent, {
+	providers: [
+		provideHubTranslation({
+			language: 'en',
+			fallbackLanguage: 'en',
+			dictionaries: {
+				en: { greeting: 'Hello {name}!' },
+				es: { greeting: '¡Hola {name}!' }
+			}
+		})
+	]
+});
+```
+
+```typescript
+@Component({
+	standalone: true,
+	imports: [TranslatePipe],
+	template: `
+		<!-- Simple key -->
+		<p>{{ 'greeting' | translate }}</p>
+
+		<!-- With interpolation params -->
+		<p>{{ 'greeting' | translate: { name: 'Carlos' } }}</p>
+	`
+})
+export class ExampleComponent {}
+```
+
+See [Internationalization (i18n)](#-internationalization-i18n) for the full API.
 
 ### 🧰 Standalone Angular Pipes
 
@@ -334,6 +403,91 @@ export class ExampleComponent {
 }
 ```
 
+## 🌐 Internationalization (i18n)
+
+The i18n system (available since `v1.2.0`) lets you register translation dictionaries via dependency injection and resolve keys reactively in templates. Updating the active translations at runtime automatically refreshes any `translate` pipe in the view.
+
+### `provideHubTranslation(config?)`
+
+Environment provider helper that registers `HubTranslationService` and its configuration. Call it once in your application bootstrap providers.
+
+```typescript
+function provideHubTranslation(config?: HubTranslationConfig): EnvironmentProviders;
+```
+
+### `HubTranslationConfig`
+
+```typescript
+interface HubTranslationConfig {
+	/** Map of language code → translation dictionary. */
+	dictionaries?: Record<string, Record<string, any>>;
+	/** Active language code (defaults to fallbackLanguage, then 'en'). */
+	language?: string;
+	/** Fallback language merged under the active language (defaults to 'en'). */
+	fallbackLanguage?: string;
+}
+```
+
+The configuration is also exposed through the `HUB_TRANSLATION_CONFIG` injection token for advanced scenarios.
+
+### `HubTranslationService`
+
+Injectable service that holds the active translations and notifies subscribers when they change.
+
+```typescript
+@Injectable()
+class HubTranslationService {
+	/** Currently active flat translations map. */
+	translations: Record<string, string>;
+	/** Emits whenever the active translations are updated. */
+	translationObserver: Observable<Record<string, string>>;
+
+	/** Resolves a key (supports dot notation) against the active translations. */
+	getTranslation(key: string): any;
+	/** Replaces the active translations, merging them over the fallback dictionary. */
+	setTranslations(translations?: Record<string, string>): void;
+}
+```
+
+```typescript
+import { HubTranslationService } from 'ng-hub-ui-utils';
+
+@Component({ /* ... */ })
+export class LanguageSwitcherComponent {
+	private translationSvc = inject(HubTranslationService);
+
+	switchToSpanish() {
+		// Swap the active dictionary at runtime; the `translate` pipe updates automatically.
+		this.translationSvc.setTranslations({ greeting: '¡Hola {name}!' });
+	}
+}
+```
+
+### `TranslatePipe` (`translate`)
+
+Impure standalone pipe that resolves a translation key with optional interpolation params. It subscribes to the service so the view stays in sync when translations change.
+
+```typescript
+// Simple key
+{{ 'greeting' | translate }}
+
+// With an object of interpolation params
+{{ 'greeting' | translate: { name: 'Carlos' } }}
+
+// Params can also be written inline as a pseudo-object string
+{{ 'greeting' | translate: "{name: 'Carlos'}" }}
+```
+
+If a key has no matching translation, the key itself is returned. Interpolation tokens use the `{paramName}` syntax (powered by the `interpolateString` utility).
+
+### Supporting utilities
+
+These functions back the i18n system and are exported for direct use:
+
+- `getValue(target: any, key: string): any` - Reads a nested value by dot-notation key.
+- `interpolateString(text: string, params?: object): string` - Replaces `{token}` placeholders in a string.
+- `equals(o1: any, o2: any): boolean` - Deep equality check used to memoize the pipe value.
+
 ## 📊 Utilities API
 
 ### Conversion Functions
@@ -483,7 +637,7 @@ This library doesn't include visual components, but support utilities used by ot
 
 ## 🤝 Compatibility
 
--   Angular 15+
+-   Angular 16+
 -   TypeScript 4.8+
 -   Node.js 16+
 -   Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
@@ -539,6 +693,15 @@ describe('ng-hub-ui-utils', () => {
 	});
 });
 ```
+
+## 📋 Changelog
+
+All notable changes are documented in the [CHANGELOG.md](./CHANGELOG.md), following [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Recent highlights:
+
+- **1.2.1** — Renamed internal i18n files and refreshed `TranslatePipe`; added a test suite for `HubTranslationService`.
+- **1.2.0** — Added the i18n system (`HubTranslationService`, `provideHubTranslation`, `TranslatePipe`, translation tokens) plus the `equals`, `interpolateString` and `getValue` utilities.
 
 ## 🐛 Issues and Support
 
