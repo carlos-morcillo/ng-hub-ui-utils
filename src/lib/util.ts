@@ -1,4 +1,4 @@
-import { NgZone } from '@angular/core';
+import { effect, NgZone, Signal, signal } from '@angular/core';
 import { Observable, OperatorFunction } from 'rxjs';
 
 /**
@@ -243,6 +243,85 @@ export function getValue(target: any, key: string): any {
 	} while (keys.length);
 
 	return target;
+}
+
+/**
+ * Checks if the given item is a plain object (not an array, null, or primitive).
+ *
+ * @param item Value to test.
+ * @returns true when item is a non-null, non-array object.
+ */
+export function isObject(item: any): boolean {
+	return item !== null && typeof item === 'object' && !Array.isArray(item);
+}
+
+/**
+ * Recursively deep-merges source into target, producing a new object.
+ * Arrays are replaced, not merged. Primitives from source win.
+ *
+ * @param target Base object.
+ * @param source Overrides to apply on top of target.
+ * @returns New merged object.
+ */
+export function mergeDeep(target: any, source: any): any {
+	const output = Object.assign({}, target);
+	if (isObject(target) && isObject(source)) {
+		Object.keys(source).forEach((key: any) => {
+			if (isObject(source[key])) {
+				if (!(key in target)) {
+					Object.assign(output, { [key]: source[key] });
+				} else {
+					output[key] = mergeDeep(target[key], source[key]);
+				}
+			} else {
+				Object.assign(output, { [key]: source[key] });
+			}
+		});
+	}
+	return output;
+}
+
+/**
+ * Generates a random alphanumeric string of the requested length.
+ * Not cryptographically secure — intended for transient DOM ids and keys.
+ *
+ * @param length Desired character count.
+ * @returns Random alphanumeric string.
+ */
+export function generateUniqueId(length: number): string {
+	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let result = '';
+	for (let i = 0; i < length; i++) {
+		result += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return result;
+}
+
+/**
+ * Creates a read-only signal that mirrors sourceSignal but only updates
+ * after debounceDelay ms have elapsed since the last emission.
+ * Cleans up the pending timer via the Angular effect cleanup mechanism.
+ *
+ * @template T Type of the signal value.
+ * @param sourceSignal Signal to debounce.
+ * @param debounceDelay Milliseconds to wait, or a signal that provides the delay.
+ * @returns Debounced read-only signal.
+ */
+export function debouncedSignal<T>(sourceSignal: Signal<T>, debounceDelay: number | Signal<number> = 0): Signal<T> {
+	const debounced = signal(sourceSignal());
+
+	effect((onCleanup) => {
+		const delay = typeof debounceDelay === 'number' ? debounceDelay : debounceDelay();
+		const value = sourceSignal();
+
+		const timeout = setTimeout(() => {
+			debounced.set(value);
+		}, delay);
+
+		onCleanup(() => clearTimeout(timeout));
+	});
+
+	return debounced;
 }
 
 /**

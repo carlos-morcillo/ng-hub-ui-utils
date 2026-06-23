@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.1.0] - 2026-06-23
+
+### Added
+
+- `isObject(item)` — checks whether a value is a plain object (not an array or primitive).
+- `mergeDeep(target, source)` — recursive deep-merge producing a new object; arrays are replaced, not merged.
+- `generateUniqueId(length)` — random alphanumeric string for transient DOM ids and keys.
+- `debouncedSignal(sourceSignal, delay)` — Angular Signal wrapper that delays propagation by a configurable millisecond window; uses `effect` cleanup to avoid timer leaks.
+
 ## [22.0.0] - 2026-06-17
 
 ### Changed
