@@ -348,6 +348,41 @@ import { hubRunTransition } from 'ng-hub-ui-utils';
 import { GetPipe, UcfirstPipe } from 'ng-hub-ui-utils';
 ```
 
+### 🏷️ Tooltip Directive
+
+Add a lightweight, themeable tooltip to any element with the `[tooltip]` directive.
+The tooltip is appended to `<body>` (never clipped) and shows on hover/focus.
+
+```typescript
+import { TooltipDirective } from 'ng-hub-ui-utils';
+
+@Component({
+	standalone: true,
+	imports: [TooltipDirective],
+	template: `<button tooltip="Save changes" placement="top">Save</button>`
+})
+export class ExampleComponent {}
+```
+
+Inputs: `tooltip` (text), `placement` (`top` | `bottom` | `left` | `right`, default `top`),
+`delay` (fade ms, default `150`), `offset` (px, default `8`).
+
+Theme it from any scope with `--hub-tooltip-*` variables:
+
+```css
+.my-scope {
+	--hub-tooltip-bg: var(--hub-sys-color-primary);
+	--hub-tooltip-color: #fff;
+	--hub-tooltip-border-radius: 999px;
+	--hub-tooltip-opacity: 1;
+}
+```
+
+Available tokens: `--hub-tooltip-bg`, `--hub-tooltip-color`, `--hub-tooltip-opacity`,
+`--hub-tooltip-padding-x`, `--hub-tooltip-padding-y`, `--hub-tooltip-border-radius`,
+`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-z-index`,
+`--hub-tooltip-transition-duration`, `--hub-tooltip-shadow`, `--hub-tooltip-font-family`.
+
 ## 🚀 Installation
 
 ```bash
@@ -708,6 +743,7 @@ Recent highlights:
 -   [Report a bug](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues)
 -   [Request a feature](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues/new?template=feature_request.md)
 -   [Repository](https://github.com/carlos-morcillo/ng-hub-ui-utils)
+-   **Author**: [Carlos Morcillo](https://www.carlosmorcillo.com)
 
 ## ☕ Support the Project
 

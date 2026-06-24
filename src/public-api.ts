@@ -16,5 +16,6 @@ export { UcfirstPipe } from './lib/pipes/ucfirst.pipe';
 export { UnwrapAsyncPipe } from './lib/pipes/unwrap-async.pipe';
 export * from './lib/popup';
 export * from './lib/scrollbar';
+export * from './lib/tooltip/tooltip.directive';
 export * from './lib/transitions';
 export * from './lib/util';

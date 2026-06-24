@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.2.0] - 2026-06-24
+
+### Added
+
+- `TooltipDirective` (`[tooltip]`) — lightweight, dependency-free tooltip moved here from `ng-hub-ui-paginable` so any library can reuse it. Now SSR-safe (injected `DOCUMENT`), with a default `top` placement and `focus`/`blur` support.
+- Tooltip theming through `--hub-tooltip-*` CSS variables (`-bg`, `-color`, `-opacity`, `-padding-x`, `-padding-y`, `-border-radius`, `-font-size`, `-max-width`, `-z-index`, `-transition-duration`, `-shadow`, `-font-family`). The injected base class is now `.hub-tooltip` (was `.ng-tooltip`).
+
 ## [22.1.0] - 2026-06-23
 
 ### Added

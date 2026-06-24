@@ -349,6 +349,41 @@ import { hubRunTransition } from 'ng-hub-ui-utils';
 import { GetPipe, UcfirstPipe } from 'ng-hub-ui-utils';
 ```
 
+### 🏷️ Directiva Tooltip
+
+Añade un tooltip ligero y tematizable a cualquier elemento con la directiva `[tooltip]`.
+El tooltip se inserta en `<body>` (no se recorta) y aparece al pasar el cursor o enfocar.
+
+```typescript
+import { TooltipDirective } from 'ng-hub-ui-utils';
+
+@Component({
+	standalone: true,
+	imports: [TooltipDirective],
+	template: `<button tooltip="Guardar cambios" placement="top">Guardar</button>`
+})
+export class ExampleComponent {}
+```
+
+Inputs: `tooltip` (texto), `placement` (`top` | `bottom` | `left` | `right`, por defecto `top`),
+`delay` (ms de fundido, por defecto `150`), `offset` (px, por defecto `8`).
+
+Tematízalo desde cualquier ámbito con variables `--hub-tooltip-*`:
+
+```css
+.mi-ambito {
+	--hub-tooltip-bg: var(--hub-sys-color-primary);
+	--hub-tooltip-color: #fff;
+	--hub-tooltip-border-radius: 999px;
+	--hub-tooltip-opacity: 1;
+}
+```
+
+Tokens disponibles: `--hub-tooltip-bg`, `--hub-tooltip-color`, `--hub-tooltip-opacity`,
+`--hub-tooltip-padding-x`, `--hub-tooltip-padding-y`, `--hub-tooltip-border-radius`,
+`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-z-index`,
+`--hub-tooltip-transition-duration`, `--hub-tooltip-shadow`, `--hub-tooltip-font-family`.
+
 ## 🚀 Instalación
 
 ```bash
@@ -697,6 +732,7 @@ Cambios destacados recientes:
 - [Reportar bug](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues)
 - [Solicitar feature](https://github.com/carlos-morcillo/ng-hub-ui-utils/issues/new?template=feature_request.md)
 - [Repositorio](https://github.com/carlos-morcillo/ng-hub-ui-utils)
+- **Autor**: [Carlos Morcillo](https://www.carlosmorcillo.com)
 
 ## ☕ Apoya el proyecto
 
