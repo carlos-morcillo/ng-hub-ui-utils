@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.3.0] - 2026-06-24
+
+### Added
+
+- **Native drag-and-drop core** (`drag-drop/`), the engine-agnostic, reusable pieces of a native HTML5 drag-and-drop implementation, shared across ng-hub-ui libraries:
+    - Pure array helpers `moveItemInArray`, `transferArrayItem`, `copyArrayItem`, plus `computeTargetIndex`, `toAbsoluteIndex`, `containsNode` and `clamp`.
+    - `resolveDropPosition` drop-side geometry (`vertical` / `horizontal` / `grid` axes, RTL-aware).
+    - `createNativeDragImage` to render a template off-screen as a native drag image.
+    - `createPointerDragSession` — the Pointer Events touch/pen fallback (floating ghost + edge autoscroll).
+    - `HubDragDropService` — a singleton coordinator for the active drag, drop target, owner registry, `canDrop` (group-based cross-instance transfers) and DOM hit-testing.
+    - Shared types `DragContainerRef`, `ActiveDrag`, `DragTarget`, `DragRegistration`, `DropPosition`, `DragPointerMode`, `DragAxis`, `DropRect`.
+
 ## [22.2.0] - 2026-06-24
 
 ### Added
@@ -28,20 +40,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Aligned with Angular 22.
 - README documentation standardized.
 
-
 ## [1.2.1] - 2026-03-19
 
 ### Changed
+
 - Renamed internal i18n files: `hub-translation.service.ts` → `translation.service.ts`, `hub-translation.provider.ts` → `translation.provider.ts`
 - Updated `TranslatePipe` imports to use renamed i18n files
 - Code formatting improvements in `translate.pipe.ts`
 
 ### Fixed
+
 - Added comprehensive test suite for `HubTranslationService`
 
 ## [1.2.0] - 2026-01-02
 
 ### Added
+
 - New `equals()` utility function for deep object comparison
 - New `interpolateString()` function for template string interpolation
 - New `getValue()` function for nested property access with dot notation
