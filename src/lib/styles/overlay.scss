@@ -1,13 +1,26 @@
 /**
- * Overlay styles for custom overlay system
+ * Overlay styles for custom overlay system.
+ *
+ * Every visual property is driven by a `--hub-overlay-*` component token with a
+ * sensible fallback, mirroring the `--hub-tooltip-*` pattern in this library.
+ * Each component token references a canonical `--hub-sys-*` system token so the
+ * overlay stays theme-aware (surface, radius, elevation and z-index all follow
+ * the design-system ladder) while remaining overridable from any scope.
  */
 
 .hub-overlay-container {
+	/* Component tokens, each backed by a system token. */
+	--hub-overlay-bg: var(--hub-sys-surface-elevated, #f8f9fa);
+	--hub-overlay-border-radius: var(--hub-sys-radius-sm, 0.25rem);
+	--hub-overlay-shadow: var(--hub-sys-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+	--hub-overlay-z-index: var(--hub-sys-zindex-dropdown, 1000);
+	--hub-overlay-backdrop-z-index: calc(var(--hub-sys-zindex-dropdown, 1000) - 1);
+
 	position: absolute;
-	z-index: 1000;
-	background: white;
-	border-radius: 4px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	z-index: var(--hub-overlay-z-index);
+	background: var(--hub-overlay-bg);
+	border-radius: var(--hub-overlay-border-radius);
+	box-shadow: var(--hub-overlay-shadow);
 	overflow: auto;
 }
 
@@ -17,7 +30,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 999;
+	z-index: var(--hub-overlay-backdrop-z-index, calc(var(--hub-sys-zindex-dropdown, 1000) - 1));
 }
 
 .hub-overlay-transparent-backdrop {
