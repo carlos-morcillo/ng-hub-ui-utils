@@ -10,5 +10,9 @@
 	},
 	"sideEffects": false,
 	"homepage": "https://hubui.dev/",
-	"author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)"
+	"author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/carlos-morcillo/ng-hub-ui-utils.git"
+	}
 }
