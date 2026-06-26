@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.4.0] - 2026-06-26
+
+### Changed
+
+- **Tooltip styles extracted to a stylesheet (BREAKING).** The `[tooltip]` directive no longer injects a `<style>` block at runtime; its rules and `--hub-tooltip-*` token defaults now ship in `styles/tooltip.scss` (mirroring `styles/overlay.scss`), each token backed by a canonical `--hub-sys-*` / `--hub-ref-*` value. Import it once in your app: `@use 'ng-hub-ui-utils/styles/tooltip';`.
+- **Canonical token names (BREAKING):** `--hub-tooltip-z-index` → `--hub-tooltip-zindex`, `--hub-overlay-z-index` → `--hub-overlay-zindex`, `--hub-overlay-backdrop-z-index` → `--hub-overlay-backdrop-zindex` (no hyphen, matching the `--hub-sys-zindex-*` convention). `--hub-tooltip-zindex` now defaults to `var(--hub-sys-zindex-tooltip, 1080)` and `--hub-tooltip-font-family` to the canonical `--hub-ref-font-family-base`.
+
+### Removed
+
+- Runtime `<style>` injection from the tooltip directive (`TOOLTIP_STYLES` / `ensureStyles`), replaced by the importable `styles/tooltip.scss`.
+
 ## [22.3.2] - 2026-06-26
 
 ### Fixed

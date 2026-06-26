@@ -364,6 +364,14 @@ import { TooltipDirective } from 'ng-hub-ui-utils';
 export class ExampleComponent {}
 ```
 
+> **Styles (required since 22.4.0).** The tooltip no longer injects its CSS at
+> runtime — import its stylesheet once in your app (e.g. `styles.scss`), the same
+> way as `overlay`:
+>
+> ```scss
+> @use 'ng-hub-ui-utils/styles/tooltip';
+> ```
+
 Inputs: `tooltip` (text), `placement` (`top` | `bottom` | `left` | `right`, default `top`),
 `delay` (fade ms, default `150`), `offset` (px, default `8`).
 
@@ -380,7 +388,7 @@ Theme it from any scope with `--hub-tooltip-*` variables:
 
 Available tokens: `--hub-tooltip-bg`, `--hub-tooltip-color`, `--hub-tooltip-opacity`,
 `--hub-tooltip-padding-x`, `--hub-tooltip-padding-y`, `--hub-tooltip-border-radius`,
-`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-z-index`,
+`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-zindex`,
 `--hub-tooltip-transition-duration`, `--hub-tooltip-shadow`, `--hub-tooltip-font-family`.
 
 ## 🚀 Installation

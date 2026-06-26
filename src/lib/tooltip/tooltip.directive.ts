@@ -4,9 +4,6 @@ import { Directive, ElementRef, HostListener, inject, input, OnDestroy, Renderer
 /** Supported tooltip placements relative to the host element. */
 export type HubTooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-/** Id of the singleton stylesheet injected into the document head. */
-const TOOLTIP_STYLE_ID = 'hub-tooltip-styles';
-
 /**
  * Themeable custom properties forwarded from the host to the tooltip element.
  *
@@ -26,52 +23,22 @@ const TOOLTIP_THEME_VARS = [
 	'--hub-tooltip-font-weight',
 	'--hub-tooltip-line-height',
 	'--hub-tooltip-max-width',
-	'--hub-tooltip-z-index',
+	'--hub-tooltip-zindex',
 	'--hub-tooltip-transition-duration',
 	'--hub-tooltip-shadow',
 	'--hub-tooltip-font-family'
 ];
 
 /**
- * Base tooltip styles, injected once per document.
- *
- * Every visual property is driven by a `--hub-tooltip-*` custom property with a
- * sensible fallback, so consuming apps can theme tooltips from any scope without
- * touching this directive.
- */
-const TOOLTIP_STYLES = `
-.hub-tooltip {
-  position: absolute;
-  z-index: var(--hub-tooltip-z-index, 1070);
-  display: block;
-  margin: 0;
-  max-width: var(--hub-tooltip-max-width, 200px);
-  padding: var(--hub-tooltip-padding-y, 0.25rem) var(--hub-tooltip-padding-x, 0.5rem);
-  font-family: var(--hub-tooltip-font-family, var(--hub-ref-font-family, inherit));
-  font-size: var(--hub-tooltip-font-size, 0.875rem);
-  font-weight: var(--hub-tooltip-font-weight, 400);
-  line-height: var(--hub-tooltip-line-height, 1.5);
-  text-align: center;
-  word-wrap: break-word;
-  white-space: normal;
-  color: var(--hub-tooltip-color, #fff);
-  background-color: var(--hub-tooltip-bg, #000);
-  border-radius: var(--hub-tooltip-border-radius, 0.375rem);
-  box-shadow: var(--hub-tooltip-shadow, none);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--hub-tooltip-transition-duration, 0.15s) ease-in-out;
-}
-.hub-tooltip--show { opacity: var(--hub-tooltip-opacity, 0.9); }
-`;
-
-/**
- * Lightweight, dependency-free tooltip directive.
+ * Lightweight tooltip directive.
  *
  * Apply `[tooltip]` to any element to show a positioned label on hover/focus.
  * The tooltip element is appended to `<body>` so it is never clipped by an
  * overflow container, and every visual aspect is themeable through
  * `--hub-tooltip-*` CSS variables.
+ *
+ * Styles ship in `styles/tooltip.scss` (mirroring `styles/overlay.scss`). Import
+ * it once in your app: `@use 'ng-hub-ui-utils/styles/tooltip';`.
  */
 @Directive({
 	selector: '[tooltip]'
@@ -96,10 +63,6 @@ export class TooltipDirective implements OnDestroy {
 	private readonly renderer = inject(Renderer2);
 	private readonly document = inject(DOCUMENT);
 
-	constructor() {
-		this.ensureStyles();
-	}
-
 	ngOnDestroy(): void {
 		this.destroyTooltip();
 	}
@@ -115,17 +78,6 @@ export class TooltipDirective implements OnDestroy {
 	@HostListener('click')
 	protected onHide(): void {
 		this.hide();
-	}
-
-	/** Injects the shared stylesheet into `<head>` once per document. */
-	private ensureStyles(): void {
-		if (this.document.getElementById(TOOLTIP_STYLE_ID)) {
-			return;
-		}
-		const style = this.renderer.createElement('style') as HTMLStyleElement;
-		style.id = TOOLTIP_STYLE_ID;
-		style.textContent = TOOLTIP_STYLES;
-		this.renderer.appendChild(this.document.head, style);
 	}
 
 	/** Creates, positions and reveals the tooltip element. */

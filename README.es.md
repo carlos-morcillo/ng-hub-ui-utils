@@ -381,7 +381,7 @@ Tematízalo desde cualquier ámbito con variables `--hub-tooltip-*`:
 
 Tokens disponibles: `--hub-tooltip-bg`, `--hub-tooltip-color`, `--hub-tooltip-opacity`,
 `--hub-tooltip-padding-x`, `--hub-tooltip-padding-y`, `--hub-tooltip-border-radius`,
-`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-z-index`,
+`--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-zindex`,
 `--hub-tooltip-transition-duration`, `--hub-tooltip-shadow`, `--hub-tooltip-font-family`.
 
 ## 🚀 Instalación

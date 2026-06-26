@@ -13,11 +13,11 @@
 	--hub-overlay-bg: var(--hub-sys-surface-elevated, #f8f9fa);
 	--hub-overlay-border-radius: var(--hub-sys-radius-sm, 0.25rem);
 	--hub-overlay-shadow: var(--hub-sys-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
-	--hub-overlay-z-index: var(--hub-sys-zindex-dropdown, 1000);
-	--hub-overlay-backdrop-z-index: calc(var(--hub-sys-zindex-dropdown, 1000) - 1);
+	--hub-overlay-zindex: var(--hub-sys-zindex-dropdown, 1000);
+	--hub-overlay-backdrop-zindex: calc(var(--hub-sys-zindex-dropdown, 1000) - 1);
 
 	position: absolute;
-	z-index: var(--hub-overlay-z-index);
+	z-index: var(--hub-overlay-zindex);
 	background: var(--hub-overlay-bg);
 	border-radius: var(--hub-overlay-border-radius);
 	box-shadow: var(--hub-overlay-shadow);
@@ -30,7 +30,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: var(--hub-overlay-backdrop-z-index, calc(var(--hub-sys-zindex-dropdown, 1000) - 1));
+	z-index: var(--hub-overlay-backdrop-zindex, calc(var(--hub-sys-zindex-dropdown, 1000) - 1));
 }
 
 .hub-overlay-transparent-backdrop {

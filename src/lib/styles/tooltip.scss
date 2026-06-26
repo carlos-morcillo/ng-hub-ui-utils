@@ -1,0 +1,56 @@
+/**
+ * Tooltip styles for the `[tooltip]` directive.
+ *
+ * The tooltip element is portaled to `<body>`, so it cannot inherit scoped
+ * variables from the host's ancestors — the directive forwards any host-resolved
+ * `--hub-tooltip-*` value onto the element inline. These rules provide the base
+ * appearance and the component-token defaults, each backed by a canonical
+ * `--hub-sys-*` / `--hub-ref-*` token, mirroring the `--hub-overlay-*` pattern in
+ * this library.
+ *
+ * Import once in your app styles:
+ *   @use 'ng-hub-ui-utils/styles/tooltip';
+ */
+
+.hub-tooltip {
+	/* Component tokens, each backed by a canonical token. */
+	--hub-tooltip-bg: var(--hub-ref-color-black, #000);
+	--hub-tooltip-color: var(--hub-ref-color-white, #fff);
+	--hub-tooltip-opacity: 0.9;
+	--hub-tooltip-padding-x: var(--hub-ref-space-2, 0.5rem);
+	--hub-tooltip-padding-y: var(--hub-ref-space-1, 0.25rem);
+	--hub-tooltip-border-radius: var(--hub-sys-radius-md, 0.375rem);
+	--hub-tooltip-font-size: var(--hub-ref-font-size-sm, 0.875rem);
+	--hub-tooltip-font-weight: var(--hub-ref-font-weight-base, 400);
+	--hub-tooltip-line-height: var(--hub-ref-line-height-base, 1.5);
+	--hub-tooltip-max-width: 200px;
+	--hub-tooltip-zindex: var(--hub-sys-zindex-tooltip, 1080);
+	--hub-tooltip-transition-duration: 0.15s;
+	--hub-tooltip-shadow: none;
+	--hub-tooltip-font-family: var(--hub-ref-font-family-base, inherit);
+
+	position: absolute;
+	z-index: var(--hub-tooltip-zindex);
+	display: block;
+	margin: 0;
+	max-width: var(--hub-tooltip-max-width);
+	padding: var(--hub-tooltip-padding-y) var(--hub-tooltip-padding-x);
+	font-family: var(--hub-tooltip-font-family);
+	font-size: var(--hub-tooltip-font-size);
+	font-weight: var(--hub-tooltip-font-weight);
+	line-height: var(--hub-tooltip-line-height);
+	text-align: center;
+	word-wrap: break-word;
+	white-space: normal;
+	color: var(--hub-tooltip-color);
+	background-color: var(--hub-tooltip-bg);
+	border-radius: var(--hub-tooltip-border-radius);
+	box-shadow: var(--hub-tooltip-shadow);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--hub-tooltip-transition-duration) ease-in-out;
+}
+
+.hub-tooltip--show {
+	opacity: var(--hub-tooltip-opacity);
+}
