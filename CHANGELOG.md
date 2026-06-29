@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.5.0] - 2026-06-29
+
+### Added
+
+- **`HubTooltipController`** — framework-agnostic tooltip engine that binds hover/focus listeners to a host element and renders the body-portaled, `--hub-tooltip-*`-themeable label. It owns no Angular dependency so it can be reused outside the directive.
+- **`hubTooltipAdapter`** + **`HubTooltipAdapter` / `HubTooltipHandle` / `HubTooltipOptions`** — a minimal, structurally-typed tooltip contract and a ready-made implementation. Lets other ng-hub-ui primitives (e.g. `ng-hub-ui-badges`) opt into the hub-ui tooltip without taking a hard dependency on this package, e.g. `provideHubBadgeTooltip(hubTooltipAdapter)`.
+
+### Changed
+
+- `TooltipDirective` now delegates all DOM work to `HubTooltipController` (same selector, inputs, behaviour and styling); no public API change.
+
 ## [22.4.0] - 2026-06-26
 
 ### Changed
