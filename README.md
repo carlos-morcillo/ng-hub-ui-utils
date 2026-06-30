@@ -391,6 +391,28 @@ Available tokens: `--hub-tooltip-bg`, `--hub-tooltip-color`, `--hub-tooltip-opac
 `--hub-tooltip-font-size`, `--hub-tooltip-max-width`, `--hub-tooltip-zindex`,
 `--hub-tooltip-transition-duration`, `--hub-tooltip-shadow`, `--hub-tooltip-font-family`.
 
+#### Tooltip adapter for other libraries (`hubTooltipAdapter`)
+
+The same tooltip engine is exposed as a framework-agnostic adapter so sibling
+libraries can offer the hub-ui tooltip **without hard-depending on this package**.
+Wire it into their optional tooltip token — e.g. for badges or breadcrumbs:
+
+```ts
+import { hubTooltipAdapter } from 'ng-hub-ui-utils';
+import { provideHubBadgeTooltip } from 'ng-hub-ui-badges';
+import { provideHubBreadcrumbTooltip } from 'ng-hub-ui-breadcrumbs';
+
+providers: [
+  provideHubBadgeTooltip(hubTooltipAdapter),
+  provideHubBreadcrumbTooltip(hubTooltipAdapter)
+];
+```
+
+Also available: the imperative `HubTooltipController` (engine) and the
+`HubTooltipAdapter` / `HubTooltipHandle` / `HubTooltipOptions` types. See the
+ecosystem-wide [Synergies & agnosticism](../../README.md#synergies--agnosticism)
+section.
+
 ## 🚀 Installation
 
 ```bash

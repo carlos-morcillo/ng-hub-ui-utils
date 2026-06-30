@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.6.0] - 2026-06-30
+
+### Added
+
+- **`HubOverflowTooltipDirective`** (`[hubOverflowTooltip]`) — shows a tooltip with the given text **only while the host element is truncated** (content wider than its box). Live truncation tracking via `ResizeObserver` + `MutationObserver`. Ideal for ellipsised labels (nav items, stepper/calendar labels, table headers…) so the tooltip never duplicates already-visible text.
+- **Agnostic tooltip token** — `HUB_TOOLTIP_ADAPTER` (defaults, via a root factory, to the built-in `hubTooltipAdapter`) and the `provideHubTooltip(adapter)` helper. `[hubOverflowTooltip]` resolves its tooltip through this token, so the tooltip can be swapped for any implementation app-wide or per subtree — keeping the tooltip agnostic even for libraries that already depend on utils. Works out of the box with no wiring.
+
 ## [22.5.0] - 2026-06-29
 
 ### Added
