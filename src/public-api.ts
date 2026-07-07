@@ -2,6 +2,7 @@
  * Public API Surface of utils
  */
 
+export * from './lib/accent';
 export * from './lib/drag-drop';
 export * from './lib/focus-trap';
 export * from './lib/i18n/translation.provider';

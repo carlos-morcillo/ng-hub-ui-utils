@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.7.0] - 2026-07-07
+
+### Added
+
+- **`resolveHubAccent(value)`** — the canonical "any colour" accent resolver shared across the ng-hub-ui family. Maps a component `color` / `variant` input to a paintable value for a `--hub-*-accent` slot: a bareword (semantic accent name / registered accent / CSS named colour) → `var(--hub-sys-color-<name>, <name>)`; a literal `#hex` / `rgb()` / `oklch()` / `var()` → unchanged; empty / nullish → `null`. Libraries that depend on `ng-hub-ui-utils` import it instead of re-implementing the resolver.
+
 ## [22.6.1] - 2026-07-02
 
 ### Fixed
