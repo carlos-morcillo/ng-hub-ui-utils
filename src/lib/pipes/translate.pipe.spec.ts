@@ -129,11 +129,12 @@ describe('TranslatePipe', () => {
             translationService.getTranslation.mockReturnValue('Updated');
             translationObserver.next({});
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('Updated');
-                expect(changeDetectorRef.markForCheck).toHaveBeenCalled();
-                ;
-            }, 10);
+            // The assertion must be reached inside the test body: a bare `setTimeout(() => expect(…))`
+            // runs after the test returned, so it throws unhandled once the pipe has been torn down.
+            await new Promise<void>((resolve) => setTimeout(resolve, 10));
+
+            expect(pipe.value).toBe('Updated');
+            expect(changeDetectorRef.markForCheck).toHaveBeenCalled();
         });
 
         it('should unsubscribe from previous translation observer', () => {
