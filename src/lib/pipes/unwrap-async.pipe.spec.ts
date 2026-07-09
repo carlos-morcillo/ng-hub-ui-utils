@@ -5,6 +5,18 @@ import { of, Subject, BehaviorSubject, delay } from 'rxjs';
 import { UnwrapAsyncPipe } from './unwrap-async.pipe';
 
 /**
+ * Awaits a real timer so a pending asynchronous emission is delivered.
+ *
+ * The assertions below must be reached *inside* the test body. A bare `setTimeout(() => expect(…))`
+ * runs after the test has already returned, so `afterEach` destroys the pipe first and the assertion
+ * either throws unhandled or reads a torn-down value — which made this suite fail intermittently.
+ *
+ * @param ms - Milliseconds to wait.
+ * @returns A promise resolved once the timer fires.
+ */
+const tick = (ms = 10): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
  * Test suite for UnwrapAsyncPipe
  * Tests the unwrapping functionality for Observable and non-Observable values
  */
@@ -62,10 +74,8 @@ describe('UnwrapAsyncPipe', () => {
             const observableValue = of('observable value');
             pipe.transform(observableValue);
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('observable value');
-                ;
-            }, 10);
+            await tick();
+            expect(pipe.value).toBe('observable value');
         });
 
         it('should handle Subject emissions', async () => {
@@ -74,35 +84,29 @@ describe('UnwrapAsyncPipe', () => {
 
             subject.next('subject value');
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('subject value');
-                ;
-            }, 10);
+            await tick();
+            expect(pipe.value).toBe('subject value');
         });
 
         it('should handle BehaviorSubject with initial value', async () => {
             const behaviorSubject = new BehaviorSubject('initial');
             pipe.transform(behaviorSubject);
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('initial');
-                ;
-            }, 10);
+            await tick();
+            expect(pipe.value).toBe('initial');
         });
 
         it('should update value when BehaviorSubject emits new value', async () => {
             const behaviorSubject = new BehaviorSubject('initial');
             pipe.transform(behaviorSubject);
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('initial');
-                behaviorSubject.next('updated');
+            await tick();
+            expect(pipe.value).toBe('initial');
 
-                setTimeout(() => {
-                    expect(pipe.value).toBe('updated');
-                    ;
-                }, 10);
-            }, 10);
+            behaviorSubject.next('updated');
+
+            await tick();
+            expect(pipe.value).toBe('updated');
         });
 
         it('should unsubscribe from previous Observable when new Observable is provided', async () => {
@@ -120,10 +124,8 @@ describe('UnwrapAsyncPipe', () => {
             subject1.next('should not update');
             subject2.next('should update');
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('should update');
-                ;
-            }, 10);
+            await tick();
+            expect(pipe.value).toBe('should update');
         });
 
         it('should handle multiple Observable emissions', async () => {
@@ -131,20 +133,16 @@ describe('UnwrapAsyncPipe', () => {
             pipe.transform(subject);
 
             subject.next(1);
-            setTimeout(() => {
-                expect(pipe.value).toBe(1);
+            await tick();
+            expect(pipe.value).toBe(1);
 
-                subject.next(2);
-                setTimeout(() => {
-                    expect(pipe.value).toBe(2);
+            subject.next(2);
+            await tick();
+            expect(pipe.value).toBe(2);
 
-                    subject.next(3);
-                    setTimeout(() => {
-                        expect(pipe.value).toBe(3);
-                        ;
-                    }, 10);
-                }, 10);
-            }, 10);
+            subject.next(3);
+            await tick();
+            expect(pipe.value).toBe(3);
         });
 
         it('should handle Observable with delayed emission', async () => {
@@ -153,10 +151,8 @@ describe('UnwrapAsyncPipe', () => {
 
             expect(pipe.value).toBe(null);
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('delayed');
-                ;
-            }, 100);
+            await tick(100);
+            expect(pipe.value).toBe('delayed');
         });
 
         it('should return null initially for Observable that has not emitted', () => {
@@ -171,17 +167,16 @@ describe('UnwrapAsyncPipe', () => {
 
             subject.next('observable value');
 
-            setTimeout(() => {
-                expect(pipe.value).toBe('observable value');
-                const oldSubscription = pipe.subscription;
+            await tick();
+            expect(pipe.value).toBe('observable value');
 
-                pipe.transform('direct value');
+            const oldSubscription = pipe.subscription;
 
-                expect(pipe.value).toBe('direct value');
-                expect(oldSubscription?.closed).toBe(true);
-                expect(pipe.subscription).toBe(null);
-                ;
-            }, 10);
+            pipe.transform('direct value');
+
+            expect(pipe.value).toBe('direct value');
+            expect(oldSubscription?.closed).toBe(true);
+            expect(pipe.subscription).toBe(null);
         });
     });
 
@@ -190,16 +185,14 @@ describe('UnwrapAsyncPipe', () => {
             const subject = new Subject<string>();
             pipe.transform(subject);
 
-            setTimeout(() => {
-                const subscription = pipe.subscription;
-                expect(subscription).not.toBe(null);
+            await tick();
+            const subscription = pipe.subscription;
+            expect(subscription).not.toBe(null);
 
-                pipe.ngOnDestroy();
+            pipe.ngOnDestroy();
 
-                expect(subscription?.closed).toBe(true);
-                expect(pipe.subscription).toBe(null);
-                ;
-            }, 10);
+            expect(subscription?.closed).toBe(true);
+            expect(pipe.subscription).toBe(null);
         });
 
         it('should not throw error when destroying without subscription', () => {
@@ -210,11 +203,9 @@ describe('UnwrapAsyncPipe', () => {
             const subject = new Subject<string>();
             pipe.transform(subject);
 
-            setTimeout(() => {
-                pipe.ngOnDestroy();
-                expect(() => pipe.ngOnDestroy()).not.toThrow();
-                ;
-            }, 10);
+            await tick();
+            pipe.ngOnDestroy();
+            expect(() => pipe.ngOnDestroy()).not.toThrow();
         });
     });
 });
